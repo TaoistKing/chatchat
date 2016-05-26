@@ -8,19 +8,19 @@ Socket.io webserver    : https://github.com/socketio/socket.io
 
 Socket.io swift client : https://github.com/socketio/socket.io-client-swift
 
-#run your server
-step 1: cd Server
+##run your server
+make sure Node is installed first, then open your terminal
+```
+cd Server
 
-step 2: npm install(make sure Node is installed first)
+npm install
 
-step 3: node index.js
+node index.js
+```
+##run your web client
+open localhost:3000 on your browser 
 
-#run your web client
-step 4: open localhost:3000 on your browser 
-
-#run your iOS client
-step 5: replace the kServerURL with your server address in constants.h
-
-step 6: build and run
+##run your iOS client
+replace the kServerURL with your server address in constants.h then build and run
 
 enjoy chating!
