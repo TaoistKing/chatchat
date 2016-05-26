@@ -70,6 +70,7 @@
 		B2CDF0951CF6DE3E00FCECA8 /* SocketTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketTypes.swift; sourceTree = "<group>"; };
 		B2CDF0961CF6DE3E00FCECA8 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		B2CDF0971CF6DE3E00FCECA8 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
+		B2CDF0AE1CF6EF1F00FCECA8 /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +108,7 @@
 				B2CDF06D1CF6DDBA00FCECA8 /* AppDelegate.m */,
 				B2CDF06F1CF6DDBA00FCECA8 /* ViewController.h */,
 				B2CDF0701CF6DDBA00FCECA8 /* ViewController.m */,
+				B2CDF0AE1CF6EF1F00FCECA8 /* constants.h */,
 				B2CDF0721CF6DDBB00FCECA8 /* Main.storyboard */,
 				B2CDF0751CF6DDBB00FCECA8 /* Assets.xcassets */,
 				B2CDF0771CF6DDBB00FCECA8 /* LaunchScreen.storyboard */,

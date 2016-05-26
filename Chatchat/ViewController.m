@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "Chatchat-Swift.h"
+#import "constants.h"
 
 @interface ViewController () <UITextFieldDelegate, UITextViewDelegate>
 {
@@ -53,7 +54,7 @@
 
 
 - (void)setupSocketio{
-    NSURL *url = [NSURL URLWithString:@"http://192.168.127.241:3000"];
+    NSURL *url = [NSURL URLWithString:kServerURL];
     _sio = [[SocketIOClient alloc] initWithSocketURL:url options:@{@"voipEnabled" : @YES,
                                                                    @"log": @YES,
                                                                    //                                                                   @"secure" : @YES,
