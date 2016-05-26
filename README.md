@@ -1,6 +1,8 @@
 # chatchat
 A simple chat system demostrating how to build chat applications based on socket.io &amp; Node.js
 
+this system including a web server, a web client, and a iOS client
+
 #components
 Socket.io webserver    : https://github.com/socketio/socket.io
 
