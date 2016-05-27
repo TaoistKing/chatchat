@@ -1,0 +1,4 @@
+*.DS_Store
+Chatchat.xcodeproj/project.xcworkspace/xcuserdata/
+Chatchat.xcodeproj/xcuserdata/
+Server/node_modules/
