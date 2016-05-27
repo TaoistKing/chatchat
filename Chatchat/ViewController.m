@@ -57,7 +57,8 @@
     NSURL *url = [NSURL URLWithString:kServerURL];
     _sio = [[SocketIOClient alloc] initWithSocketURL:url options:@{@"voipEnabled" : @YES,
                                                                    @"log": @YES,
-                                                                   //                                                                   @"secure" : @YES,
+                                                                   @"forceWebsockets" : @YES,
+//                                                                   @"secure" : @YES,
                                                                    @"forcePolling": @YES}];
     [_sio on:@"connect" callback:^(NSArray * _Nonnull data, SocketAckEmitter * _Nonnull ack) {
         NSLog(@"connected");
@@ -74,6 +75,22 @@
 
 - (void)handleNewMessage : (NSString *)message{
     self.textView.text = [self.textView.text stringByAppendingFormat:@"\n%@", message];
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+        [self showLocalNotification : message];
+    }
+}
+
+-(void)showLocalNotification : (NSString *)message {
+    NSLog(@"showLocalNotification");
+    
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+//    notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:7];
+    notification.alertBody = message;
+    notification.timeZone = [NSTimeZone defaultTimeZone];
+    notification.soundName = UILocalNotificationDefaultSoundName;
+    notification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
 - (void)sendMessage : (NSString *)message{
