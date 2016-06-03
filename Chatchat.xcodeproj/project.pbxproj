@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A8EBF381CFD38930037BABB /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */; };
+		1A8EBF421CFE80420037BABB /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF411CFE80410037BABB /* ChatViewController.m */; };
+		1A8EBF461CFECC540037BABB /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF451CFECC540037BABB /* User.m */; };
+		1A8EBF491CFECC640037BABB /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF481CFECC640037BABB /* Message.m */; };
+		1A8EBF4C1CFFDB080037BABB /* ChatSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF4B1CFFDB040037BABB /* ChatSession.m */; };
+		1A8EBF4F1CFFDF9C0037BABB /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF4E1CFFDF9C0037BABB /* UserManager.m */; };
+		1A8EBF521CFFE3450037BABB /* ChatSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF511CFFE3450037BABB /* ChatSessionManager.m */; };
 		B2CDF06B1CF6DDBA00FCECA8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF06A1CF6DDBA00FCECA8 /* main.m */; };
 		B2CDF06E1CF6DDBA00FCECA8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF06D1CF6DDBA00FCECA8 /* AppDelegate.m */; };
 		B2CDF0711CF6DDBA00FCECA8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0701CF6DDBA00FCECA8 /* ViewController.m */; };
@@ -38,6 +45,21 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A8EBF361CFD38930037BABB /* ContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewController.h; sourceTree = "<group>"; };
+		1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewController.m; sourceTree = "<group>"; };
+		1A8EBF401CFE80410037BABB /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		1A8EBF411CFE80410037BABB /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		1A8EBF431CFEB0C40037BABB /* CommonDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonDefines.h; sourceTree = "<group>"; };
+		1A8EBF441CFECC540037BABB /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		1A8EBF451CFECC540037BABB /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		1A8EBF471CFECC640037BABB /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		1A8EBF481CFECC640037BABB /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		1A8EBF4A1CFFDB040037BABB /* ChatSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatSession.h; sourceTree = "<group>"; };
+		1A8EBF4B1CFFDB040037BABB /* ChatSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatSession.m; sourceTree = "<group>"; };
+		1A8EBF4D1CFFDF9C0037BABB /* UserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
+		1A8EBF4E1CFFDF9C0037BABB /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
+		1A8EBF501CFFE3450037BABB /* ChatSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatSessionManager.h; sourceTree = "<group>"; };
+		1A8EBF511CFFE3450037BABB /* ChatSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatSessionManager.m; sourceTree = "<group>"; };
 		B2CDF0661CF6DDBA00FCECA8 /* Chatchat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chatchat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2CDF06A1CF6DDBA00FCECA8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B2CDF06C1CF6DDBA00FCECA8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -108,7 +130,22 @@
 				B2CDF06D1CF6DDBA00FCECA8 /* AppDelegate.m */,
 				B2CDF06F1CF6DDBA00FCECA8 /* ViewController.h */,
 				B2CDF0701CF6DDBA00FCECA8 /* ViewController.m */,
+				1A8EBF361CFD38930037BABB /* ContactsTableViewController.h */,
+				1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */,
+				1A8EBF401CFE80410037BABB /* ChatViewController.h */,
+				1A8EBF411CFE80410037BABB /* ChatViewController.m */,
+				1A8EBF4A1CFFDB040037BABB /* ChatSession.h */,
+				1A8EBF4B1CFFDB040037BABB /* ChatSession.m */,
+				1A8EBF501CFFE3450037BABB /* ChatSessionManager.h */,
+				1A8EBF511CFFE3450037BABB /* ChatSessionManager.m */,
+				1A8EBF441CFECC540037BABB /* User.h */,
+				1A8EBF451CFECC540037BABB /* User.m */,
+				1A8EBF4D1CFFDF9C0037BABB /* UserManager.h */,
+				1A8EBF4E1CFFDF9C0037BABB /* UserManager.m */,
+				1A8EBF471CFECC640037BABB /* Message.h */,
+				1A8EBF481CFECC640037BABB /* Message.m */,
 				B2CDF0AE1CF6EF1F00FCECA8 /* constants.h */,
+				1A8EBF431CFEB0C40037BABB /* CommonDefines.h */,
 				B2CDF0721CF6DDBB00FCECA8 /* Main.storyboard */,
 				B2CDF0751CF6DDBB00FCECA8 /* Assets.xcassets */,
 				B2CDF0771CF6DDBB00FCECA8 /* LaunchScreen.storyboard */,
@@ -194,6 +231,7 @@
 				TargetAttributes = {
 					B2CDF0651CF6DDBA00FCECA8 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = NY93BV4889;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -246,23 +284,30 @@
 				B2CDF0A51CF6DE3E00FCECA8 /* SocketIOClientSpec.swift in Sources */,
 				B2CDF0711CF6DDBA00FCECA8 /* ViewController.m in Sources */,
 				B2CDF0AC1CF6DE3E00FCECA8 /* String.swift in Sources */,
+				1A8EBF461CFECC540037BABB /* User.m in Sources */,
 				B2CDF0AB1CF6DE3E00FCECA8 /* SocketTypes.swift in Sources */,
 				B2CDF0991CF6DE3E00FCECA8 /* SocketAckEmitter.swift in Sources */,
 				B2CDF0A21CF6DE3E00FCECA8 /* SocketEventHandler.swift in Sources */,
 				B2CDF0A01CF6DE3E00FCECA8 /* SocketEngineSpec.swift in Sources */,
 				B2CDF09B1CF6DE3E00FCECA8 /* SocketAnyEvent.swift in Sources */,
+				1A8EBF521CFFE3450037BABB /* ChatSessionManager.m in Sources */,
 				B2CDF0A81CF6DE3E00FCECA8 /* SocketPacket.swift in Sources */,
 				B2CDF09D1CF6DE3E00FCECA8 /* SocketEngineClient.swift in Sources */,
 				B2CDF0AA1CF6DE3E00FCECA8 /* SocketStringReader.swift in Sources */,
 				B2CDF09C1CF6DE3E00FCECA8 /* SocketEngine.swift in Sources */,
+				1A8EBF421CFE80420037BABB /* ChatViewController.m in Sources */,
 				B2CDF0981CF6DE3E00FCECA8 /* NSCharacterSet.swift in Sources */,
+				1A8EBF381CFD38930037BABB /* ContactsTableViewController.m in Sources */,
 				B2CDF06E1CF6DDBA00FCECA8 /* AppDelegate.m in Sources */,
 				B2CDF09E1CF6DE3E00FCECA8 /* SocketEnginePacketType.swift in Sources */,
 				B2CDF06B1CF6DDBA00FCECA8 /* main.m in Sources */,
 				B2CDF0A71CF6DE3E00FCECA8 /* SocketLogger.swift in Sources */,
 				B2CDF0A41CF6DE3E00FCECA8 /* SocketIOClientOption.swift in Sources */,
+				1A8EBF4F1CFFDF9C0037BABB /* UserManager.m in Sources */,
 				B2CDF09F1CF6DE3E00FCECA8 /* SocketEnginePollable.swift in Sources */,
 				B2CDF0A91CF6DE3E00FCECA8 /* SocketParsable.swift in Sources */,
+				1A8EBF4C1CFFDB080037BABB /* ChatSession.m in Sources */,
+				1A8EBF491CFECC640037BABB /* Message.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,11 +419,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Chatchat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Beta.Inc.Chatchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -386,11 +434,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Chatchat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Beta.Inc.Chatchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -413,6 +464,7 @@
 				B2CDF07F1CF6DDBB00FCECA8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
