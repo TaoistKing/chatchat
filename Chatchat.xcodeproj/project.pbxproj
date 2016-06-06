@@ -106,6 +106,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A1F050E1D05043C00982A1E /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B2CDF06F1CF6DDBA00FCECA8 /* ViewController.h */,
+				B2CDF0701CF6DDBA00FCECA8 /* ViewController.m */,
+				1A8EBF361CFD38930037BABB /* ContactsTableViewController.h */,
+				1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */,
+				1A8EBF401CFE80410037BABB /* ChatViewController.h */,
+				1A8EBF411CFE80410037BABB /* ChatViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		1A1F050F1D05044F00982A1E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1A8EBF4A1CFFDB040037BABB /* ChatSession.h */,
+				1A8EBF4B1CFFDB040037BABB /* ChatSession.m */,
+				1A8EBF501CFFE3450037BABB /* ChatSessionManager.h */,
+				1A8EBF511CFFE3450037BABB /* ChatSessionManager.m */,
+				1A8EBF441CFECC540037BABB /* User.h */,
+				1A8EBF451CFECC540037BABB /* User.m */,
+				1A8EBF4D1CFFDF9C0037BABB /* UserManager.h */,
+				1A8EBF4E1CFFDF9C0037BABB /* UserManager.m */,
+				1A8EBF471CFECC640037BABB /* Message.h */,
+				1A8EBF481CFECC640037BABB /* Message.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		B2CDF05D1CF6DDBA00FCECA8 = {
 			isa = PBXGroup;
 			children = (
@@ -125,25 +155,11 @@
 		B2CDF0681CF6DDBA00FCECA8 /* Chatchat */ = {
 			isa = PBXGroup;
 			children = (
+				1A1F050F1D05044F00982A1E /* Models */,
+				1A1F050E1D05043C00982A1E /* ViewControllers */,
 				B2CDF0801CF6DE3E00FCECA8 /* SocketIO */,
 				B2CDF06C1CF6DDBA00FCECA8 /* AppDelegate.h */,
 				B2CDF06D1CF6DDBA00FCECA8 /* AppDelegate.m */,
-				B2CDF06F1CF6DDBA00FCECA8 /* ViewController.h */,
-				B2CDF0701CF6DDBA00FCECA8 /* ViewController.m */,
-				1A8EBF361CFD38930037BABB /* ContactsTableViewController.h */,
-				1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */,
-				1A8EBF401CFE80410037BABB /* ChatViewController.h */,
-				1A8EBF411CFE80410037BABB /* ChatViewController.m */,
-				1A8EBF4A1CFFDB040037BABB /* ChatSession.h */,
-				1A8EBF4B1CFFDB040037BABB /* ChatSession.m */,
-				1A8EBF501CFFE3450037BABB /* ChatSessionManager.h */,
-				1A8EBF511CFFE3450037BABB /* ChatSessionManager.m */,
-				1A8EBF441CFECC540037BABB /* User.h */,
-				1A8EBF451CFECC540037BABB /* User.m */,
-				1A8EBF4D1CFFDF9C0037BABB /* UserManager.h */,
-				1A8EBF4E1CFFDF9C0037BABB /* UserManager.m */,
-				1A8EBF471CFECC640037BABB /* Message.h */,
-				1A8EBF481CFECC640037BABB /* Message.m */,
 				B2CDF0AE1CF6EF1F00FCECA8 /* constants.h */,
 				1A8EBF431CFEB0C40037BABB /* CommonDefines.h */,
 				B2CDF0721CF6DDBB00FCECA8 /* Main.storyboard */,

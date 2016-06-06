@@ -50,6 +50,11 @@ UISearchResultsUpdating, SocketIODelegate>
     
     _sessionManager = [ChatSessionManager sharedManager];
     _userManager = [UserManager sharedManager];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,34 +62,43 @@ UISearchResultsUpdating, SocketIODelegate>
     // Dispose of any resources that can be recreated.
 }
 
+- (void)didBecomeActive : (NSNotification *)notification{
+    if (_serverConnected) {
+        [self.tableView reloadData];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
-    /*
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"input your host" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.textAlignment = NSTextAlignmentCenter;
-        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        [textField setKeyboardType:UIKeyboardTypeDecimalPad];
-        self.inputTextField = textField;
-    }];
-    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        _hostAddr = self.inputTextField.text;
-        NSLog(@"server addr : %@", _hostAddr);
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self setupSocketIO];
-        });
-    }]];
-    [self presentViewController:alert animated:YES completion:nil];
-     */
-    _hostAddr = @"192.168.127.241";
-    [self setupSocketIO];
+    if (_serverConnected) {
+        [self.tableView reloadData];
+    }else{
+        
+         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"input your host" message:nil preferredStyle:UIAlertControllerStyleAlert];
+         [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+             textField.textAlignment = NSTextAlignmentCenter;
+             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+             [textField setKeyboardType:UIKeyboardTypeDecimalPad];
+             self.inputTextField = textField;
+         }];
+         [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+             _hostAddr = self.inputTextField.text;
+             NSLog(@"server addr : %@", _hostAddr);
+             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                 [self setupSocketIO];
+             });
+         }]];
+         [self presentViewController:alert animated:YES completion:nil];
+    }
     
-    _connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
-                                                        target:self
-                                                      selector:@selector(checkConnection)
-                                                      userInfo:nil
-                                                       repeats:YES];
+    if (!_connectionTimer) {
+        _connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+                                                            target:self
+                                                          selector:@selector(checkConnection)
+                                                          userInfo:nil
+                                                           repeats:YES];
+    }
 }
 
 - (void)checkConnection{
@@ -103,7 +117,7 @@ UISearchResultsUpdating, SocketIODelegate>
     [_sio on:@"connect" callback:^(NSArray * _Nonnull data, SocketAckEmitter * _Nonnull ack) {
         NSLog(@"connected");
         _serverConnected = YES;
-        NSDictionary *dic = @{@"name" : @"iOS Client", @"uuid" : [NSUUID UUID].UUIDString};
+        NSDictionary *dic = @{@"name" : @"iOS Client", @"uuid" : [UIDevice currentDevice].identifierForVendor.UUIDString};
         [_sio emit:@"register" withItems:@[dic]];
     }];
     
@@ -165,6 +179,7 @@ UISearchResultsUpdating, SocketIODelegate>
                                                    options:NSJSONWritingPrettyPrinted error:NULL];
     NSString *messageString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     [_sio emit:@"chat message" withItems:@[messageString]];
+//    [_sio emit:@"chat message" withItems:@[[message toDictionary]]];
 }
 
 - (void)handleNewMessage : (id)data{
@@ -190,7 +205,7 @@ UISearchResultsUpdating, SocketIODelegate>
         return;
     }
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
-        [self showLocalNotification : message.content];
+        [self handleBackgroundMessage: message];
     }else{
         //in chat view controller
         UIViewController *topVc = self.navigationController.topViewController;
@@ -219,14 +234,25 @@ UISearchResultsUpdating, SocketIODelegate>
     [session onUnreadMessage:message];
     
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
-        [self markChatCellUnread : session];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self markChatCellUnread : session];
+        });
     }
 }
 
 - (void)markChatCellUnread : (ChatSession *)session{
+    [self.tableView reloadData];
+    
+    //why refresh a single cell not working?
+    /*
     UITableViewCell *cell = [self cellForChatSession:session];
     cell.tintColor = [UIColor redColor];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu unread", (unsigned long)[session unreadCount]];
+//    [cell reloadInputViews];
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:@[[self.tableView indexPathForCell:cell]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView endUpdates];
+     */
 }
 
 - (UITableViewCell *)cellForChatSession : (ChatSession *)session{
@@ -268,7 +294,16 @@ UISearchResultsUpdating, SocketIODelegate>
     [task resume];
 }
 
--(void)showLocalNotification : (NSString *)message {
+- (void)handleBackgroundMessage : (Message *)message{
+    User *user = [_userManager findUserByUID:message.from];
+    ChatSession *session = [_sessionManager findSessionByPeer:user];
+    [session onUnreadMessage:message];
+    
+    NSString *notificationString = [NSString stringWithFormat:@"%@:%@", user.name, message.content];
+    [self showLocalNotification: notificationString];
+}
+
+- (void)showLocalNotification : (NSString *)message {
     NSLog(@"showLocalNotification");
     
     UILocalNotification *notification = [[UILocalNotification alloc] init];
@@ -300,15 +335,42 @@ UISearchResultsUpdating, SocketIODelegate>
     NSArray<User *> *users = [_userManager listUsers];
     
     // Configure the cell...
-    NSString *name = [users objectAtIndex:indexPath.row].name;
+    User *user = [users objectAtIndex:indexPath.row];
+    NSString *name = user.name;
     cell.textLabel.text = name;
     cell.detailTextLabel.text = nil;
+    cell.accessoryView = nil;
     
     if ([[users objectAtIndex:indexPath.row].uniqueID isEqualToString: [_userManager localUser].uniqueID]) {
         cell.detailTextLabel.text = @"me";
+    }else{
+        ChatSession *session = [_sessionManager createSessionWithPeer:user];
+        if (session.unreadCount > 0) {
+            NSString *title = [NSString stringWithFormat:@"%lu unread", (unsigned long)[session unreadCount]];
+            UIButton *detailButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [detailButton setTitle:title forState:UIControlStateNormal];
+            [detailButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [detailButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+            [detailButton addTarget:self action:@selector(detailButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            CGFloat height = [tableView rectForRowAtIndexPath:indexPath].size.height * 0.85;
+            CGFloat width = [tableView rectForRowAtIndexPath:indexPath].size.width * 0.4;
+
+            detailButton.frame = CGRectMake(0, 0, width, height);
+            detailButton.tag = indexPath.row;
+            cell.accessoryView = detailButton;
+        }
     }
 
     return cell;
+}
+
+- (void)detailButtonPressed : (id)sender{
+    UIButton *button = (UIButton *)sender;
+    
+    NSLog(@"button in row %ld pressed", (long)button.tag);
+    User *selectedUser = [[_userManager listUsers] objectAtIndex:button.tag];
+
+    [self presentChatViewControllerWithPeer:selectedUser];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -322,12 +384,7 @@ UISearchResultsUpdating, SocketIODelegate>
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Select Action" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     [alert addAction:[UIAlertAction actionWithTitle:@"Chat" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         //chat selected
-        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        ChatViewController *cvc = [sb instantiateViewControllerWithIdentifier:@"ChatViewController"];
-        cvc.socketIODelegate = self;
-        cvc.peer = selectedUser;
-        cvc.title = @"Chat";
-        [self.navigationController pushViewController:cvc animated:YES];
+        [self presentChatViewControllerWithPeer:selectedUser];
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Voice Chat" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         //Voice chat selected
@@ -340,6 +397,14 @@ UISearchResultsUpdating, SocketIODelegate>
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+- (void)presentChatViewControllerWithPeer: (User *)user{
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ChatViewController *cvc = [sb instantiateViewControllerWithIdentifier:@"ChatViewController"];
+    cvc.socketIODelegate = self;
+    cvc.peer = user;
+    cvc.title = @"Chat";
+    [self.navigationController pushViewController:cvc animated:YES];
+}
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController{
     if (!searchController.active) {

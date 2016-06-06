@@ -23,5 +23,6 @@
 
 - (void)onMessage: (Message *)message;
 - (void)onUnreadMessage: (Message *)message;
+- (void)clearUnread;
 
 @end

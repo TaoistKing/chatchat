@@ -5,6 +5,32 @@ var users = [];
 var sockets = [];
 var index = 0;
 
+
+function findIndexByUID(uid){
+  var i;
+  for(i = 0; i < users.length; i++){
+    if(users[i].id == uid) break;
+  }
+
+  if(i == users.length) return -1;
+  
+  return i;
+}
+
+function findUserByUID(uid){
+  var index = findIndexByUID(uid);
+  if(index == -1) return null;
+  
+  return users[index];
+}
+
+function findSocketByUID(uid){
+  var index = findIndexByUID(uid);
+  
+  if(index == -1)  return null;
+  return sockets[index];
+}
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
@@ -28,7 +54,17 @@ io.on('connection', function(socket){
   });
   
   socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
+    if(msg.to == 'all'){
+      io.emit('chat message', msg);
+    }else{
+      var socket_to = findSocketByUID(JSON.parse(msg).to);
+      if(socket_to){
+        socket_to.emit("chat message", msg);
+      }else{
+        socket.broadcast.emit("chat message", msg);
+      }
+    }
+    
   });
   
   socket.on('register', function(info){

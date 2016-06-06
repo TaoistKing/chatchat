@@ -50,4 +50,8 @@
     [_unreadMessages addObject:message];
 }
 
+- (void)clearUnread{
+    [_unreadMessages removeAllObjects];
+}
+
 @end
