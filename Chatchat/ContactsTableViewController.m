@@ -21,14 +21,12 @@ UISearchResultsUpdating, SocketIODelegate>
     UISearchController *_searchController;
     BOOL _serverConnected;
     NSTimer *_connectionTimer;
+    UITextField *_inputTextField;
     
     ChatSessionManager *_sessionManager;
     UserManager *_userManager;
-    
-    NSMutableDictionary<NSString *, ChatViewController *> *_session_viewcontroller;
 }
 
-@property (weak) UITextField *inputTextField;
 @property (weak) IBOutlet UILabel *footerLabel;
 @end
 
@@ -80,10 +78,10 @@ UISearchResultsUpdating, SocketIODelegate>
              textField.textAlignment = NSTextAlignmentCenter;
              textField.clearButtonMode = UITextFieldViewModeWhileEditing;
              [textField setKeyboardType:UIKeyboardTypeDecimalPad];
-             self.inputTextField = textField;
+             _inputTextField = textField;
          }];
          [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-             _hostAddr = self.inputTextField.text;
+             _hostAddr = _inputTextField.text;
              NSLog(@"server addr : %@", _hostAddr);
              dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                  [self setupSocketIO];

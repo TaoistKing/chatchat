@@ -16,7 +16,6 @@
 		1A8EBF521CFFE3450037BABB /* ChatSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF511CFFE3450037BABB /* ChatSessionManager.m */; };
 		B2CDF06B1CF6DDBA00FCECA8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF06A1CF6DDBA00FCECA8 /* main.m */; };
 		B2CDF06E1CF6DDBA00FCECA8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF06D1CF6DDBA00FCECA8 /* AppDelegate.m */; };
-		B2CDF0711CF6DDBA00FCECA8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0701CF6DDBA00FCECA8 /* ViewController.m */; };
 		B2CDF0741CF6DDBB00FCECA8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CDF0721CF6DDBB00FCECA8 /* Main.storyboard */; };
 		B2CDF0761CF6DDBB00FCECA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2CDF0751CF6DDBB00FCECA8 /* Assets.xcassets */; };
 		B2CDF0791CF6DDBB00FCECA8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CDF0771CF6DDBB00FCECA8 /* LaunchScreen.storyboard */; };
@@ -64,8 +63,6 @@
 		B2CDF06A1CF6DDBA00FCECA8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B2CDF06C1CF6DDBA00FCECA8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B2CDF06D1CF6DDBA00FCECA8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		B2CDF06F1CF6DDBA00FCECA8 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		B2CDF0701CF6DDBA00FCECA8 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		B2CDF0731CF6DDBB00FCECA8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B2CDF0751CF6DDBB00FCECA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2CDF0781CF6DDBB00FCECA8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -109,8 +106,6 @@
 		1A1F050E1D05043C00982A1E /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				B2CDF06F1CF6DDBA00FCECA8 /* ViewController.h */,
-				B2CDF0701CF6DDBA00FCECA8 /* ViewController.m */,
 				1A8EBF361CFD38930037BABB /* ContactsTableViewController.h */,
 				1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */,
 				1A8EBF401CFE80410037BABB /* ChatViewController.h */,
@@ -298,7 +293,6 @@
 				B2CDF0A11CF6DE3E00FCECA8 /* SocketEngineWebsocket.swift in Sources */,
 				B2CDF0AD1CF6DE3E00FCECA8 /* WebSocket.swift in Sources */,
 				B2CDF0A51CF6DE3E00FCECA8 /* SocketIOClientSpec.swift in Sources */,
-				B2CDF0711CF6DDBA00FCECA8 /* ViewController.m in Sources */,
 				B2CDF0AC1CF6DE3E00FCECA8 /* String.swift in Sources */,
 				1A8EBF461CFECC540037BABB /* User.m in Sources */,
 				B2CDF0AB1CF6DE3E00FCECA8 /* SocketTypes.swift in Sources */,
