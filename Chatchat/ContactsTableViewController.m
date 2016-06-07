@@ -7,7 +7,7 @@
 //
 
 #import "ContactsTableViewController.h"
-#import "Chatchat-Swift.h"
+#import <SocketIOClientSwift/SocketIOClientSwift-Swift.h>
 #import "ChatViewController.h"
 #import "CommonDefines.h"
 #import "ChatSessionManager.h"

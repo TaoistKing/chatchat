@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02BE6DA0AD957EECBA07E7C8 /* Pods_Chatchat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD4431605C4967AED9A7A9BE /* Pods_Chatchat.framework */; };
 		1A8EBF381CFD38930037BABB /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */; };
 		1A8EBF421CFE80420037BABB /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF411CFE80410037BABB /* ChatViewController.m */; };
 		1A8EBF461CFECC540037BABB /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF451CFECC540037BABB /* User.m */; };
@@ -19,28 +20,6 @@
 		B2CDF0741CF6DDBB00FCECA8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CDF0721CF6DDBB00FCECA8 /* Main.storyboard */; };
 		B2CDF0761CF6DDBB00FCECA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2CDF0751CF6DDBB00FCECA8 /* Assets.xcassets */; };
 		B2CDF0791CF6DDBB00FCECA8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CDF0771CF6DDBB00FCECA8 /* LaunchScreen.storyboard */; };
-		B2CDF0981CF6DE3E00FCECA8 /* NSCharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0821CF6DE3E00FCECA8 /* NSCharacterSet.swift */; };
-		B2CDF0991CF6DE3E00FCECA8 /* SocketAckEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0831CF6DE3E00FCECA8 /* SocketAckEmitter.swift */; };
-		B2CDF09A1CF6DE3E00FCECA8 /* SocketAckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0841CF6DE3E00FCECA8 /* SocketAckManager.swift */; };
-		B2CDF09B1CF6DE3E00FCECA8 /* SocketAnyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0851CF6DE3E00FCECA8 /* SocketAnyEvent.swift */; };
-		B2CDF09C1CF6DE3E00FCECA8 /* SocketEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0861CF6DE3E00FCECA8 /* SocketEngine.swift */; };
-		B2CDF09D1CF6DE3E00FCECA8 /* SocketEngineClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0871CF6DE3E00FCECA8 /* SocketEngineClient.swift */; };
-		B2CDF09E1CF6DE3E00FCECA8 /* SocketEnginePacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0881CF6DE3E00FCECA8 /* SocketEnginePacketType.swift */; };
-		B2CDF09F1CF6DE3E00FCECA8 /* SocketEnginePollable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0891CF6DE3E00FCECA8 /* SocketEnginePollable.swift */; };
-		B2CDF0A01CF6DE3E00FCECA8 /* SocketEngineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF08A1CF6DE3E00FCECA8 /* SocketEngineSpec.swift */; };
-		B2CDF0A11CF6DE3E00FCECA8 /* SocketEngineWebsocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF08B1CF6DE3E00FCECA8 /* SocketEngineWebsocket.swift */; };
-		B2CDF0A21CF6DE3E00FCECA8 /* SocketEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF08C1CF6DE3E00FCECA8 /* SocketEventHandler.swift */; };
-		B2CDF0A31CF6DE3E00FCECA8 /* SocketIOClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF08D1CF6DE3E00FCECA8 /* SocketIOClient.swift */; };
-		B2CDF0A41CF6DE3E00FCECA8 /* SocketIOClientOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF08E1CF6DE3E00FCECA8 /* SocketIOClientOption.swift */; };
-		B2CDF0A51CF6DE3E00FCECA8 /* SocketIOClientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF08F1CF6DE3E00FCECA8 /* SocketIOClientSpec.swift */; };
-		B2CDF0A61CF6DE3E00FCECA8 /* SocketIOClientStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0901CF6DE3E00FCECA8 /* SocketIOClientStatus.swift */; };
-		B2CDF0A71CF6DE3E00FCECA8 /* SocketLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0911CF6DE3E00FCECA8 /* SocketLogger.swift */; };
-		B2CDF0A81CF6DE3E00FCECA8 /* SocketPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0921CF6DE3E00FCECA8 /* SocketPacket.swift */; };
-		B2CDF0A91CF6DE3E00FCECA8 /* SocketParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0931CF6DE3E00FCECA8 /* SocketParsable.swift */; };
-		B2CDF0AA1CF6DE3E00FCECA8 /* SocketStringReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0941CF6DE3E00FCECA8 /* SocketStringReader.swift */; };
-		B2CDF0AB1CF6DE3E00FCECA8 /* SocketTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0951CF6DE3E00FCECA8 /* SocketTypes.swift */; };
-		B2CDF0AC1CF6DE3E00FCECA8 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0961CF6DE3E00FCECA8 /* String.swift */; };
-		B2CDF0AD1CF6DE3E00FCECA8 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF0971CF6DE3E00FCECA8 /* WebSocket.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +38,8 @@
 		1A8EBF4E1CFFDF9C0037BABB /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
 		1A8EBF501CFFE3450037BABB /* ChatSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatSessionManager.h; sourceTree = "<group>"; };
 		1A8EBF511CFFE3450037BABB /* ChatSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatSessionManager.m; sourceTree = "<group>"; };
+		23B859805FBE0EB62D7114E0 /* Pods-Chatchat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatchat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Chatchat/Pods-Chatchat.debug.xcconfig"; sourceTree = "<group>"; };
+		A50343BB10F4589FD3C9335A /* Pods-Chatchat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatchat.release.xcconfig"; path = "Pods/Target Support Files/Pods-Chatchat/Pods-Chatchat.release.xcconfig"; sourceTree = "<group>"; };
 		B2CDF0661CF6DDBA00FCECA8 /* Chatchat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chatchat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2CDF06A1CF6DDBA00FCECA8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B2CDF06C1CF6DDBA00FCECA8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -67,29 +48,8 @@
 		B2CDF0751CF6DDBB00FCECA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2CDF0781CF6DDBB00FCECA8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B2CDF07A1CF6DDBB00FCECA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B2CDF0821CF6DE3E00FCECA8 /* NSCharacterSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSCharacterSet.swift; sourceTree = "<group>"; };
-		B2CDF0831CF6DE3E00FCECA8 /* SocketAckEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketAckEmitter.swift; sourceTree = "<group>"; };
-		B2CDF0841CF6DE3E00FCECA8 /* SocketAckManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketAckManager.swift; sourceTree = "<group>"; };
-		B2CDF0851CF6DE3E00FCECA8 /* SocketAnyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketAnyEvent.swift; sourceTree = "<group>"; };
-		B2CDF0861CF6DE3E00FCECA8 /* SocketEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEngine.swift; sourceTree = "<group>"; };
-		B2CDF0871CF6DE3E00FCECA8 /* SocketEngineClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEngineClient.swift; sourceTree = "<group>"; };
-		B2CDF0881CF6DE3E00FCECA8 /* SocketEnginePacketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEnginePacketType.swift; sourceTree = "<group>"; };
-		B2CDF0891CF6DE3E00FCECA8 /* SocketEnginePollable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEnginePollable.swift; sourceTree = "<group>"; };
-		B2CDF08A1CF6DE3E00FCECA8 /* SocketEngineSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEngineSpec.swift; sourceTree = "<group>"; };
-		B2CDF08B1CF6DE3E00FCECA8 /* SocketEngineWebsocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEngineWebsocket.swift; sourceTree = "<group>"; };
-		B2CDF08C1CF6DE3E00FCECA8 /* SocketEventHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEventHandler.swift; sourceTree = "<group>"; };
-		B2CDF08D1CF6DE3E00FCECA8 /* SocketIOClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketIOClient.swift; sourceTree = "<group>"; };
-		B2CDF08E1CF6DE3E00FCECA8 /* SocketIOClientOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketIOClientOption.swift; sourceTree = "<group>"; };
-		B2CDF08F1CF6DE3E00FCECA8 /* SocketIOClientSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketIOClientSpec.swift; sourceTree = "<group>"; };
-		B2CDF0901CF6DE3E00FCECA8 /* SocketIOClientStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketIOClientStatus.swift; sourceTree = "<group>"; };
-		B2CDF0911CF6DE3E00FCECA8 /* SocketLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketLogger.swift; sourceTree = "<group>"; };
-		B2CDF0921CF6DE3E00FCECA8 /* SocketPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketPacket.swift; sourceTree = "<group>"; };
-		B2CDF0931CF6DE3E00FCECA8 /* SocketParsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketParsable.swift; sourceTree = "<group>"; };
-		B2CDF0941CF6DE3E00FCECA8 /* SocketStringReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketStringReader.swift; sourceTree = "<group>"; };
-		B2CDF0951CF6DE3E00FCECA8 /* SocketTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketTypes.swift; sourceTree = "<group>"; };
-		B2CDF0961CF6DE3E00FCECA8 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		B2CDF0971CF6DE3E00FCECA8 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		B2CDF0AE1CF6EF1F00FCECA8 /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
+		BD4431605C4967AED9A7A9BE /* Pods_Chatchat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chatchat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02BE6DA0AD957EECBA07E7C8 /* Pods_Chatchat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,11 +92,21 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
+		96D1BA9E62D8039829C7B42F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BD4431605C4967AED9A7A9BE /* Pods_Chatchat.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B2CDF05D1CF6DDBA00FCECA8 = {
 			isa = PBXGroup;
 			children = (
 				B2CDF0681CF6DDBA00FCECA8 /* Chatchat */,
 				B2CDF0671CF6DDBA00FCECA8 /* Products */,
+				E8B54AA66B3734C91B4449B3 /* Pods */,
+				96D1BA9E62D8039829C7B42F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -152,7 +123,6 @@
 			children = (
 				1A1F050F1D05044F00982A1E /* Models */,
 				1A1F050E1D05043C00982A1E /* ViewControllers */,
-				B2CDF0801CF6DE3E00FCECA8 /* SocketIO */,
 				B2CDF06C1CF6DDBA00FCECA8 /* AppDelegate.h */,
 				B2CDF06D1CF6DDBA00FCECA8 /* AppDelegate.m */,
 				B2CDF0AE1CF6EF1F00FCECA8 /* constants.h */,
@@ -174,41 +144,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		B2CDF0801CF6DE3E00FCECA8 /* SocketIO */ = {
+		E8B54AA66B3734C91B4449B3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B2CDF0811CF6DE3E00FCECA8 /* Source */,
+				23B859805FBE0EB62D7114E0 /* Pods-Chatchat.debug.xcconfig */,
+				A50343BB10F4589FD3C9335A /* Pods-Chatchat.release.xcconfig */,
 			);
-			path = SocketIO;
-			sourceTree = "<group>";
-		};
-		B2CDF0811CF6DE3E00FCECA8 /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				B2CDF0821CF6DE3E00FCECA8 /* NSCharacterSet.swift */,
-				B2CDF0831CF6DE3E00FCECA8 /* SocketAckEmitter.swift */,
-				B2CDF0841CF6DE3E00FCECA8 /* SocketAckManager.swift */,
-				B2CDF0851CF6DE3E00FCECA8 /* SocketAnyEvent.swift */,
-				B2CDF0861CF6DE3E00FCECA8 /* SocketEngine.swift */,
-				B2CDF0871CF6DE3E00FCECA8 /* SocketEngineClient.swift */,
-				B2CDF0881CF6DE3E00FCECA8 /* SocketEnginePacketType.swift */,
-				B2CDF0891CF6DE3E00FCECA8 /* SocketEnginePollable.swift */,
-				B2CDF08A1CF6DE3E00FCECA8 /* SocketEngineSpec.swift */,
-				B2CDF08B1CF6DE3E00FCECA8 /* SocketEngineWebsocket.swift */,
-				B2CDF08C1CF6DE3E00FCECA8 /* SocketEventHandler.swift */,
-				B2CDF08D1CF6DE3E00FCECA8 /* SocketIOClient.swift */,
-				B2CDF08E1CF6DE3E00FCECA8 /* SocketIOClientOption.swift */,
-				B2CDF08F1CF6DE3E00FCECA8 /* SocketIOClientSpec.swift */,
-				B2CDF0901CF6DE3E00FCECA8 /* SocketIOClientStatus.swift */,
-				B2CDF0911CF6DE3E00FCECA8 /* SocketLogger.swift */,
-				B2CDF0921CF6DE3E00FCECA8 /* SocketPacket.swift */,
-				B2CDF0931CF6DE3E00FCECA8 /* SocketParsable.swift */,
-				B2CDF0941CF6DE3E00FCECA8 /* SocketStringReader.swift */,
-				B2CDF0951CF6DE3E00FCECA8 /* SocketTypes.swift */,
-				B2CDF0961CF6DE3E00FCECA8 /* String.swift */,
-				B2CDF0971CF6DE3E00FCECA8 /* WebSocket.swift */,
-			);
-			path = Source;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,9 +160,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2CDF07D1CF6DDBB00FCECA8 /* Build configuration list for PBXNativeTarget "Chatchat" */;
 			buildPhases = (
+				819A37B32909F05C63604591 /* [CP] Check Pods Manifest.lock */,
 				B2CDF0621CF6DDBA00FCECA8 /* Sources */,
 				B2CDF0631CF6DDBA00FCECA8 /* Frameworks */,
 				B2CDF0641CF6DDBA00FCECA8 /* Resources */,
+				939835C133C68AFEC6F923A7 /* [CP] Embed Pods Frameworks */,
+				007566F4BE525EF9774EDFD6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -282,40 +227,66 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		007566F4BE525EF9774EDFD6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Chatchat/Pods-Chatchat-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		819A37B32909F05C63604591 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		939835C133C68AFEC6F923A7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Chatchat/Pods-Chatchat-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B2CDF0621CF6DDBA00FCECA8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2CDF0A31CF6DE3E00FCECA8 /* SocketIOClient.swift in Sources */,
-				B2CDF0A61CF6DE3E00FCECA8 /* SocketIOClientStatus.swift in Sources */,
-				B2CDF09A1CF6DE3E00FCECA8 /* SocketAckManager.swift in Sources */,
-				B2CDF0A11CF6DE3E00FCECA8 /* SocketEngineWebsocket.swift in Sources */,
-				B2CDF0AD1CF6DE3E00FCECA8 /* WebSocket.swift in Sources */,
-				B2CDF0A51CF6DE3E00FCECA8 /* SocketIOClientSpec.swift in Sources */,
-				B2CDF0AC1CF6DE3E00FCECA8 /* String.swift in Sources */,
 				1A8EBF461CFECC540037BABB /* User.m in Sources */,
-				B2CDF0AB1CF6DE3E00FCECA8 /* SocketTypes.swift in Sources */,
-				B2CDF0991CF6DE3E00FCECA8 /* SocketAckEmitter.swift in Sources */,
-				B2CDF0A21CF6DE3E00FCECA8 /* SocketEventHandler.swift in Sources */,
-				B2CDF0A01CF6DE3E00FCECA8 /* SocketEngineSpec.swift in Sources */,
-				B2CDF09B1CF6DE3E00FCECA8 /* SocketAnyEvent.swift in Sources */,
 				1A8EBF521CFFE3450037BABB /* ChatSessionManager.m in Sources */,
-				B2CDF0A81CF6DE3E00FCECA8 /* SocketPacket.swift in Sources */,
-				B2CDF09D1CF6DE3E00FCECA8 /* SocketEngineClient.swift in Sources */,
-				B2CDF0AA1CF6DE3E00FCECA8 /* SocketStringReader.swift in Sources */,
-				B2CDF09C1CF6DE3E00FCECA8 /* SocketEngine.swift in Sources */,
 				1A8EBF421CFE80420037BABB /* ChatViewController.m in Sources */,
-				B2CDF0981CF6DE3E00FCECA8 /* NSCharacterSet.swift in Sources */,
 				1A8EBF381CFD38930037BABB /* ContactsTableViewController.m in Sources */,
 				B2CDF06E1CF6DDBA00FCECA8 /* AppDelegate.m in Sources */,
-				B2CDF09E1CF6DE3E00FCECA8 /* SocketEnginePacketType.swift in Sources */,
 				B2CDF06B1CF6DDBA00FCECA8 /* main.m in Sources */,
-				B2CDF0A71CF6DE3E00FCECA8 /* SocketLogger.swift in Sources */,
-				B2CDF0A41CF6DE3E00FCECA8 /* SocketIOClientOption.swift in Sources */,
 				1A8EBF4F1CFFDF9C0037BABB /* UserManager.m in Sources */,
-				B2CDF09F1CF6DE3E00FCECA8 /* SocketEnginePollable.swift in Sources */,
-				B2CDF0A91CF6DE3E00FCECA8 /* SocketParsable.swift in Sources */,
 				1A8EBF4C1CFFDB080037BABB /* ChatSession.m in Sources */,
 				1A8EBF491CFECC640037BABB /* Message.m in Sources */,
 			);
@@ -427,6 +398,7 @@
 		};
 		B2CDF07E1CF6DDBB00FCECA8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 23B859805FBE0EB62D7114E0 /* Pods-Chatchat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -442,6 +414,7 @@
 		};
 		B2CDF07F1CF6DDBB00FCECA8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A50343BB10F4589FD3C9335A /* Pods-Chatchat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
