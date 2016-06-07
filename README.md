@@ -24,8 +24,10 @@ Open [localhost:3000](http://localhost:3000) on your browser
 >Note: all messages sent from Web will be broadcast message
 
 ##run your iOS client
-Build and run Chatchat on your iOS devices.
-Upon application launch, type in your host address(server address you are running on)
+- install dependency with `pod install`
+- open xcworkspace file
+- build and run
+- upon application launch, type in your host address(server address you are running on)
 
 >Note: all messages sent from iOS will be singlecast message
 
