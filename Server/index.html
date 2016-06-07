@@ -44,7 +44,7 @@
         return false;
       });
       socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(JSON.parse(msg).content));
+        $('#messages').append($('<li>').text(msg.content));
       });
       socket.on('connect', function(){
         var info = {name: 'Web Client', uuid: uuid};

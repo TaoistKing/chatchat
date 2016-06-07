@@ -121,6 +121,9 @@ UISearchResultsUpdating, SocketIODelegate>
     
     [_sio on:@"disconnect" callback:^(NSArray * _Nonnull data, SocketAckEmitter * _Nonnull ack) {
         _serverConnected = NO;
+        
+        [_userManager removeAllUsers];
+        [self.tableView reloadData];
     }];
     
     [_sio on:@"register succeed" callback:^(NSArray * _Nonnull data, SocketAckEmitter * _Nonnull ack) {
@@ -138,16 +141,20 @@ UISearchResultsUpdating, SocketIODelegate>
     }];
     
     [_sio on:@"new user" callback:^(NSArray * _Nonnull data, SocketAckEmitter * _Nonnull ack) {
+        [_userManager addUserWithUID:[[data lastObject] objectForKey:@"id"]
+                                name:[[data lastObject] objectForKey:@"name"]];
+        
         //reload contacts
         [self getOnlineContacts];
     }];
     
     [_sio on:@"user leave" callback:^(NSArray * _Nonnull data, SocketAckEmitter * _Nonnull ack) {
         //reload contacts
-        [self getOnlineContacts];
         
         //TODO delete chat session with this user
         [self deleteChatSessionWithUser: [data lastObject]];
+        
+        [self getOnlineContacts];
     }];
     
     [_sio connect];
@@ -173,11 +180,7 @@ UISearchResultsUpdating, SocketIODelegate>
 }
 
 - (void)sendMessage : (Message *)message{
-    NSData *data = [NSJSONSerialization dataWithJSONObject:[message toDictionary]
-                                                   options:NSJSONWritingPrettyPrinted error:NULL];
-    NSString *messageString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    [_sio emit:@"chat message" withItems:@[messageString]];
-//    [_sio emit:@"chat message" withItems:@[[message toDictionary]]];
+    [_sio emit:@"chat message" withItems:@[[message toDictionary]]];
 }
 
 - (void)handleNewMessage : (id)data{
@@ -227,8 +230,8 @@ UISearchResultsUpdating, SocketIODelegate>
 - (void)handleUnReadMessage : (Message *)message{
     //TODO update tableview cell status, and store this message to db.
     User *user = [_userManager findUserByUID:message.from];
-    ChatSession *session = [_sessionManager findSessionByPeer:user];
-    
+    ChatSession *session = [_sessionManager createSessionWithPeer:user];
+
     [session onUnreadMessage:message];
     
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {

@@ -19,6 +19,7 @@
 - (void)addUserWithUID: (NSString *)uid name: (NSString *)name;
 - (void)removeUserByUID: (NSString *)uid;
 - (void)removeUser: (User *)user;
+- (void)removeAllUsers;
 
 - (NSArray<User *> *)listUsers;
 - (NSUInteger)numberUsers;

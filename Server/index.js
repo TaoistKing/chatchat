@@ -2,7 +2,6 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var users = [];
-var sockets = [];
 var index = 0;
 
 
@@ -24,42 +23,45 @@ function findUserByUID(uid){
   return users[index];
 }
 
-function findSocketByUID(uid){
-  var index = findIndexByUID(uid);
-  
-  if(index == -1)  return null;
-  return sockets[index];
+
+function censor(key, value) {
+  if (key == 'socketid') {
+    return undefined;
+  }
+  return value;
 }
+
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/listUsers', function(req, res){
-  res.end(JSON.stringify(users));
+  res.end(JSON.stringify(users, censor));
 });
 
 io.on('connection', function(socket){
+  var peer;
   console.log('a user connected');
   
   socket.on('disconnect', function(){
     console.log('user disconnected');
-    var index = sockets.indexOf(socket);
+    var index = users.indexOf(peer);
     if(index != -1){
       var usr = users[index];
       users.splice(index, 1);
-      sockets.splice(index, 1);
-      socket.broadcast.emit('user leave', usr);
+      socket.broadcast.emit('user leave', usr.pub);
     }
   });
   
   socket.on('chat message', function(msg){
     if(msg.to == 'all'){
-      io.emit('chat message', msg);
+      socket.broadcast.emit('chat message', msg);
     }else{
-      var socket_to = findSocketByUID(JSON.parse(msg).to);
-      if(socket_to){
-        socket_to.emit("chat message", msg);
+      var target = findUserByUID(msg.to);
+      if(target){
+        socket.broadcast.to(target.socketid).emit('chat message', msg);
+        //socket_to.emit("chat message", msg);
       }else{
         socket.broadcast.emit("chat message", msg);
       }
@@ -69,13 +71,12 @@ io.on('connection', function(socket){
   
   socket.on('register', function(info){
 
-    if(sockets.indexOf(socket) == -1){
-      var usr = {id: info.uuid, name: info.name};
+    if(findUserByUID(info.uuid) == null){
+      var usr = {id: info.uuid, name: info.name, socketid: socket.id};
       users.push(usr);
-      sockets.push(socket);
-      socket.emit('register succeed', usr);
-      socket.broadcast.emit('new user', usr);
-      index++;
+      socket.emit('register succeed', {id: info.uuid, name: info.name});
+      socket.broadcast.emit('new user', {id: info.uuid, name: info.name});
+      peer = usr;
     }
   
   });

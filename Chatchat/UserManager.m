@@ -65,6 +65,10 @@
     [_users removeObject:user];
 }
 
+- (void)removeAllUsers{
+    [_users removeAllObjects];
+}
+
 - (NSArray<User *> *)listUsers{
     return _users;
 }
