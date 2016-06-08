@@ -12,6 +12,8 @@
 #import "CommonDefines.h"
 #import "ChatSessionManager.h"
 #import "UserManager.h"
+#import "VoiceCallViewController.h"
+#import "IncomingCallViewController.h"
 
 @interface ContactsTableViewController () <UISearchControllerDelegate,
 UISearchResultsUpdating, SocketIODelegate>
@@ -152,9 +154,11 @@ UISearchResultsUpdating, SocketIODelegate>
         //reload contacts
         
         //TODO delete chat session with this user
-        [self deleteChatSessionWithUser: [data lastObject]];
-        
-        [self getOnlineContacts];
+        if ([data count] > 0) {
+            [self deleteChatSessionWithUser: [data lastObject]];
+            
+            [self getOnlineContacts];
+        }
     }];
     
     [_sio connect];
@@ -180,6 +184,10 @@ UISearchResultsUpdating, SocketIODelegate>
 }
 
 - (void)sendMessage : (Message *)message{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+    message.time = [formatter stringFromDate:[NSDate date]];;
+
     [_sio emit:@"chat message" withItems:@[[message toDictionary]]];
 }
 
@@ -199,7 +207,27 @@ UISearchResultsUpdating, SocketIODelegate>
     message.to = [dic objectForKey:@"to"];
     message.content = [dic objectForKey:@"content"];
     message.time = [dic objectForKey:@"time"];
+    message.type = [dic objectForKey:@"type"];
+    message.subtype = [dic objectForKey:@"subtype"];
+    
+    if ([message.type isEqualToString:@"signal"]) {
+        [self handleSignalMessage : message];
+    }else if([message.type isEqualToString:@"text"]){
+        [self handleTextMessage:message];
+    }
+}
 
+- (void)handleSignalMessage : (Message *)message{
+    if ([message.subtype isEqualToString:@"offer"]) {
+        //got offer
+        [self presentIncomingCallViewController:message];
+    }else if ([message.subtype isEqualToString:@"candidate"]){
+        //handle candidate when IncomingCallVC is not created yet.
+        TODO;
+    }
+}
+
+- (void)handleTextMessage : (Message *)message{
     if (![message.to isEqualToString:[_userManager localUser].uniqueID] &&
         ![message.to isEqualToString:@"all"]) {
         //not my message
@@ -389,6 +417,7 @@ UISearchResultsUpdating, SocketIODelegate>
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Voice Chat" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         //Voice chat selected
+        [self presentVoiceCallViewControllerWithPeer:selectedUser];
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Video Chat" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         //Video Chat selected
@@ -405,6 +434,27 @@ UISearchResultsUpdating, SocketIODelegate>
     cvc.peer = user;
     cvc.title = @"Chat";
     [self.navigationController pushViewController:cvc animated:YES];
+}
+
+- (void)presentVoiceCallViewControllerWithPeer: (User *)user{
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    VoiceCallViewController *vcvc = [sb instantiateViewControllerWithIdentifier:@"VoiceCallViewController"];
+    vcvc.socketIODelegate = self;
+    vcvc.peer = user;
+    [self presentViewController:vcvc animated:YES completion:nil];
+}
+
+- (void)presentIncomingCallViewController : (Message *)message{
+    User *peer = [_userManager findUserByUID:message.from];
+
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    IncomingCallViewController *icvc = [sb instantiateViewControllerWithIdentifier:@"IncomingCallViewController"];
+    icvc.socketIODelegate = self;
+    icvc.peer = peer;
+    icvc.offer = message;
+    
+    [self presentViewController:icvc animated:YES completion:nil];
+
 }
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController{

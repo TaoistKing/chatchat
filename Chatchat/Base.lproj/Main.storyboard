@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--ChatChat-->
@@ -168,6 +169,70 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="olB-Nr-eWS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1255" y="1830"/>
+        </scene>
+        <!--Voice Call View Controller-->
+        <scene sceneID="G76-7l-bvF">
+            <objects>
+                <viewController storyboardIdentifier="VoiceCallViewController" id="jni-kx-edv" customClass="VoiceCallViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="o1O-uD-aMH"/>
+                        <viewControllerLayoutGuide type="bottom" id="0cX-b7-yVq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PJ5-ln-bVH">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calling..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p0o-qP-nEA">
+                                <rect key="frame" x="267" y="440" width="66" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="p0o-qP-nEA" firstAttribute="centerX" secondItem="PJ5-ln-bVH" secondAttribute="centerX" id="PlZ-t6-Axe"/>
+                            <constraint firstItem="p0o-qP-nEA" firstAttribute="centerY" secondItem="PJ5-ln-bVH" secondAttribute="centerY" multiplier="1.5" id="tR1-EL-6lp"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zSx-xK-x9M" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1255" y="2519"/>
+        </scene>
+        <!--Incoming Call View Controller-->
+        <scene sceneID="g1T-5Z-7T0">
+            <objects>
+                <viewController storyboardIdentifier="IncomingCallViewController" id="ULj-5a-tS1" customClass="IncomingCallViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="T7p-mB-u5g"/>
+                        <viewControllerLayoutGuide type="bottom" id="hLq-ia-ll0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="o9N-HM-KEj">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t41-zX-r1V">
+                                <rect key="frame" x="276" y="435" width="49" height="30"/>
+                                <state key="normal" title="Accept"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w54-8V-dyi">
+                                <rect key="frame" x="282" y="499" width="36" height="30"/>
+                                <state key="normal" title="Deny"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="t41-zX-r1V" firstAttribute="centerX" secondItem="o9N-HM-KEj" secondAttribute="centerX" id="Ozw-YT-5z6"/>
+                            <constraint firstItem="t41-zX-r1V" firstAttribute="centerY" secondItem="o9N-HM-KEj" secondAttribute="centerY" multiplier="1.5" id="WVz-vg-eDk"/>
+                            <constraint firstItem="w54-8V-dyi" firstAttribute="top" secondItem="t41-zX-r1V" secondAttribute="bottom" constant="34" id="l3n-Ng-fzm"/>
+                            <constraint firstItem="w54-8V-dyi" firstAttribute="centerX" secondItem="o9N-HM-KEj" secondAttribute="centerX" id="u5O-d0-FMV"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="muN-Ct-rPO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1255" y="3192"/>
         </scene>
         <!--ChatChat-->
         <scene sceneID="zyC-5H-Whh">

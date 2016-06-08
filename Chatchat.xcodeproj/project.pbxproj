@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		02BE6DA0AD957EECBA07E7C8 /* Pods_Chatchat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD4431605C4967AED9A7A9BE /* Pods_Chatchat.framework */; };
+		1A03B0851D06CFE200E72938 /* VoiceCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A03B0841D06CFE200E72938 /* VoiceCallViewController.m */; };
+		1A03B09C1D08120700E72938 /* RTCICECandidate+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A03B09B1D08120700E72938 /* RTCICECandidate+JSON.m */; };
+		1A03B09F1D08198F00E72938 /* IncomingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A03B09E1D08198F00E72938 /* IncomingCallViewController.m */; };
 		1A8EBF381CFD38930037BABB /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */; };
 		1A8EBF421CFE80420037BABB /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF411CFE80410037BABB /* ChatViewController.m */; };
 		1A8EBF461CFECC540037BABB /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF451CFECC540037BABB /* User.m */; };
@@ -23,6 +26,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A03B0831D06CFE200E72938 /* VoiceCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceCallViewController.h; sourceTree = "<group>"; };
+		1A03B0841D06CFE200E72938 /* VoiceCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoiceCallViewController.m; sourceTree = "<group>"; };
+		1A03B09A1D08120700E72938 /* RTCICECandidate+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTCICECandidate+JSON.h"; sourceTree = "<group>"; };
+		1A03B09B1D08120700E72938 /* RTCICECandidate+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTCICECandidate+JSON.m"; sourceTree = "<group>"; };
+		1A03B09D1D08198F00E72938 /* IncomingCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingCallViewController.h; sourceTree = "<group>"; };
+		1A03B09E1D08198F00E72938 /* IncomingCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallViewController.m; sourceTree = "<group>"; };
 		1A8EBF361CFD38930037BABB /* ContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewController.h; sourceTree = "<group>"; };
 		1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewController.m; sourceTree = "<group>"; };
 		1A8EBF401CFE80410037BABB /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
@@ -71,6 +80,12 @@
 				1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */,
 				1A8EBF401CFE80410037BABB /* ChatViewController.h */,
 				1A8EBF411CFE80410037BABB /* ChatViewController.m */,
+				1A03B0831D06CFE200E72938 /* VoiceCallViewController.h */,
+				1A03B0841D06CFE200E72938 /* VoiceCallViewController.m */,
+				1A03B09D1D08198F00E72938 /* IncomingCallViewController.h */,
+				1A03B09E1D08198F00E72938 /* IncomingCallViewController.m */,
+				1A03B09A1D08120700E72938 /* RTCICECandidate+JSON.h */,
+				1A03B09B1D08120700E72938 /* RTCICECandidate+JSON.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -282,13 +297,16 @@
 			files = (
 				1A8EBF461CFECC540037BABB /* User.m in Sources */,
 				1A8EBF521CFFE3450037BABB /* ChatSessionManager.m in Sources */,
+				1A03B09F1D08198F00E72938 /* IncomingCallViewController.m in Sources */,
 				1A8EBF421CFE80420037BABB /* ChatViewController.m in Sources */,
+				1A03B09C1D08120700E72938 /* RTCICECandidate+JSON.m in Sources */,
 				1A8EBF381CFD38930037BABB /* ContactsTableViewController.m in Sources */,
 				B2CDF06E1CF6DDBA00FCECA8 /* AppDelegate.m in Sources */,
 				B2CDF06B1CF6DDBA00FCECA8 /* main.m in Sources */,
 				1A8EBF4F1CFFDF9C0037BABB /* UserManager.m in Sources */,
 				1A8EBF4C1CFFDB080037BABB /* ChatSession.m in Sources */,
 				1A8EBF491CFECC640037BABB /* Message.m in Sources */,
+				1A03B0851D06CFE200E72938 /* VoiceCallViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +421,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Chatchat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -419,6 +438,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Chatchat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

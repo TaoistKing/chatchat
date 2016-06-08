@@ -130,12 +130,10 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     Message *message = [[Message alloc] init];
+    message.type = @"text";
     message.from = [_userManager localUser].uniqueID;
     message.to = self.peer.uniqueID;
     message.content = textField.text;
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
-    message.time = [formatter stringFromDate:[NSDate date]];;
     [self.socketIODelegate sendMessage:message];
     
     //'received' a local message
