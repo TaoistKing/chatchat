@@ -175,12 +175,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2CDF07D1CF6DDBB00FCECA8 /* Build configuration list for PBXNativeTarget "Chatchat" */;
 			buildPhases = (
+				419EBDE2A7F3C4E3B9357C59 /* 📦 Check Pods Manifest.lock */,
 				819A37B32909F05C63604591 /* [CP] Check Pods Manifest.lock */,
 				B2CDF0621CF6DDBA00FCECA8 /* Sources */,
 				B2CDF0631CF6DDBA00FCECA8 /* Frameworks */,
 				B2CDF0641CF6DDBA00FCECA8 /* Resources */,
 				939835C133C68AFEC6F923A7 /* [CP] Embed Pods Frameworks */,
 				007566F4BE525EF9774EDFD6 /* [CP] Copy Pods Resources */,
+				4D52EC991DEE53D50E3FC9A0 /* 📦 Embed Pods Frameworks */,
+				A75C17AF99809625482B01FE /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -258,6 +261,36 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Chatchat/Pods-Chatchat-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		419EBDE2A7F3C4E3B9357C59 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		4D52EC991DEE53D50E3FC9A0 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Chatchat/Pods-Chatchat-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		819A37B32909F05C63604591 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -286,6 +319,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Chatchat/Pods-Chatchat-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A75C17AF99809625482B01FE /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Chatchat/Pods-Chatchat-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

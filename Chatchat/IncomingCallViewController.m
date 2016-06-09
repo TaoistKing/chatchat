@@ -70,6 +70,14 @@ static NSString * const kARDDefaultSTUNServerUrl =
     [_peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:offer];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    //deal with any pending signal message after view loaded
+    for (Message *item in self.pendingMessages) {
+        [self onMessage:item];
+    }
+}
 
 #pragma mark -- RTCSessionDescriptionDelegate --
 - (void)peerConnection:(RTCPeerConnection *)peerConnection

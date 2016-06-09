@@ -16,6 +16,7 @@
 @property (weak) User *peer;
 
 @property (strong) Message *offer;
+@property (strong) NSArray<Message *> *pendingMessages;
 
 - (void)onMessage: (Message *)message;
 

@@ -27,6 +27,8 @@ UISearchResultsUpdating, SocketIODelegate>
     
     ChatSessionManager *_sessionManager;
     UserManager *_userManager;
+    
+    NSMutableArray <Message *> *_unReadSignalingMessages;
 }
 
 @property (weak) IBOutlet UILabel *footerLabel;
@@ -223,7 +225,17 @@ UISearchResultsUpdating, SocketIODelegate>
         [self presentIncomingCallViewController:message];
     }else if ([message.subtype isEqualToString:@"candidate"]){
         //handle candidate when IncomingCallVC is not created yet.
-        TODO;
+        UIViewController *vc = self.presentedViewController;
+        if ([vc isKindOfClass:[IncomingCallViewController class]]) {
+            IncomingCallViewController *icvc = (IncomingCallViewController *)vc;
+            [icvc onMessage:message];
+        }else if([vc isKindOfClass:[VoiceCallViewController class]]){
+            VoiceCallViewController *vcvc = (VoiceCallViewController *)vc;
+            [vcvc onMessage:message];
+        }else{
+            //received candidates when calling view not presented
+            [_unReadSignalingMessages addObject:message];
+        }
     }
 }
 
@@ -441,6 +453,7 @@ UISearchResultsUpdating, SocketIODelegate>
     VoiceCallViewController *vcvc = [sb instantiateViewControllerWithIdentifier:@"VoiceCallViewController"];
     vcvc.socketIODelegate = self;
     vcvc.peer = user;
+    
     [self presentViewController:vcvc animated:YES completion:nil];
 }
 
@@ -452,6 +465,7 @@ UISearchResultsUpdating, SocketIODelegate>
     icvc.socketIODelegate = self;
     icvc.peer = peer;
     icvc.offer = message;
+    icvc.pendingMessages = _unReadSignalingMessages;
     
     [self presentViewController:icvc animated:YES completion:nil];
 
