@@ -44,6 +44,18 @@ static NSString * const kARDDefaultSTUNServerUrl =
     return [[RTCMediaConstraints alloc] initWithMandatoryConstraints:nil optionalConstraints:nil];
 }
 
+- (RTCMediaConstraints *)defaultAnswerConstraints{
+    NSArray *mandatoryConstraints = @[
+                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
+                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"false"]
+                                      ];
+    RTCMediaConstraints* constraints =
+    [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints
+                                          optionalConstraints:nil];
+    return constraints;
+}
+
+
 - (NSArray *)defaultIceServers{
     NSURL *defaultSTUNServerURL = [NSURL URLWithString:kARDDefaultSTUNServerUrl];
     
@@ -101,7 +113,7 @@ didSetSessionDescriptionWithError:(NSError *)error
         NSLog(@"have local offer");
     }else if (peerConnection.signalingState == RTCSignalingHaveRemoteOffer){
         NSLog(@"have remote offer");
-        [_peerConnection createAnswerWithDelegate:self constraints:[self defaultMediaConstraints]];
+        [_peerConnection createAnswerWithDelegate:self constraints:[self defaultAnswerConstraints]];
         
     }else if(peerConnection.signalingState == RTCSignalingHaveRemotePrAnswer){
         NSLog(@"have remote answer");

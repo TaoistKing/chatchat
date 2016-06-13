@@ -50,7 +50,7 @@ io.on('connection', function(socket){
     if(index != -1){
       var usr = users[index];
       users.splice(index, 1);
-      socket.broadcast.emit('user leave', usr.pub);
+      socket.broadcast.emit('user leave', {id: usr.id, name:usr.name});
     }
   });
   
