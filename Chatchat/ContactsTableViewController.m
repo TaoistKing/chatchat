@@ -119,7 +119,8 @@ UISearchResultsUpdating, SocketIODelegate>
     [_sio on:@"connect" callback:^(NSArray * _Nonnull data, SocketAckEmitter * _Nonnull ack) {
         NSLog(@"connected");
         _serverConnected = YES;
-        NSDictionary *dic = @{@"name" : @"iOS Client", @"uuid" : [UIDevice currentDevice].identifierForVendor.UUIDString};
+        NSString *deviceName = [[UIDevice currentDevice] name];
+        NSDictionary *dic = @{@"name" : deviceName, @"uuid" : [UIDevice currentDevice].identifierForVendor.UUIDString};
         [_sio emit:@"register" withItems:@[dic]];
     }];
     
