@@ -19,7 +19,7 @@
              @"content" : self.content,
              @"time" : self.time,
              @"type" : self.type,
-             @"subType" : self.subtype
+             @"subtype" : self.subtype
              };
 }
 

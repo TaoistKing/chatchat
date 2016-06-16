@@ -92,6 +92,7 @@ UISearchResultsUpdating, SocketIODelegate>
              });
          }]];
          [self presentViewController:alert animated:YES completion:nil];
+        
     }
     
     if (!_connectionTimer) {
@@ -119,7 +120,8 @@ UISearchResultsUpdating, SocketIODelegate>
     [_sio on:@"connect" callback:^(NSArray * _Nonnull data, SocketAckEmitter * _Nonnull ack) {
         NSLog(@"connected");
         _serverConnected = YES;
-        NSDictionary *dic = @{@"name" : @"iOS Client", @"uuid" : [UIDevice currentDevice].identifierForVendor.UUIDString};
+        NSString *deviceName = [[UIDevice currentDevice] name];
+        NSDictionary *dic = @{@"name" : deviceName, @"uuid" : [UIDevice currentDevice].identifierForVendor.UUIDString};
         [_sio emit:@"register" withItems:@[dic]];
     }];
     
@@ -223,7 +225,9 @@ UISearchResultsUpdating, SocketIODelegate>
     if ([message.subtype isEqualToString:@"offer"]) {
         //got offer
         [self presentIncomingCallViewController:message];
-    }else if ([message.subtype isEqualToString:@"candidate"]){
+    }else if ([message.subtype isEqualToString:@"candidate"] ||
+              [message.subtype isEqualToString:@"answer"] ||
+              [message.subtype isEqualToString:@"close"]){
         //handle candidate when IncomingCallVC is not created yet.
         UIViewController *vc = self.presentedViewController;
         if ([vc isKindOfClass:[IncomingCallViewController class]]) {
@@ -465,9 +469,10 @@ UISearchResultsUpdating, SocketIODelegate>
     icvc.socketIODelegate = self;
     icvc.peer = peer;
     icvc.offer = message;
-    icvc.pendingMessages = _unReadSignalingMessages;
     
-    [self presentViewController:icvc animated:YES completion:nil];
+    [self presentViewController:icvc animated:YES completion:^(void){
+        icvc.pendingMessages = _unReadSignalingMessages;
+    }];
 
 }
 

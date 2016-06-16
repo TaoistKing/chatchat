@@ -25,12 +25,14 @@
 
 #import "RTCICECandidate+JSON.h"
 
-static NSString * const kARDDefaultSTUNServerUrl =
-@"stun:stun.l.google.com:19302";
+#import "constants.h"
+
 
 @interface IncomingCallViewController () <RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
 {
+    RTCPeerConnectionFactory *_factory;
     RTCPeerConnection *_peerConnection;
+    BOOL _accepted;
 }
 
 @property (strong) IBOutlet UIButton *acceptButton;
@@ -57,7 +59,7 @@ static NSString * const kARDDefaultSTUNServerUrl =
 
 
 - (NSArray *)defaultIceServers{
-    NSURL *defaultSTUNServerURL = [NSURL URLWithString:kARDDefaultSTUNServerUrl];
+    NSURL *defaultSTUNServerURL = [NSURL URLWithString:kDefaultSTUNServerUrl];
     
     return @[[[RTCICEServer alloc] initWithURI:defaultSTUNServerURL
                                       username:@""
@@ -68,18 +70,14 @@ static NSString * const kARDDefaultSTUNServerUrl =
     [super viewDidLoad];
     
     [RTCPeerConnectionFactory initializeSSL];
-    RTCPeerConnectionFactory *factory = [[RTCPeerConnectionFactory alloc] init];
+    _factory = [[RTCPeerConnectionFactory alloc] init];
     
-    _peerConnection = [factory peerConnectionWithICEServers:[self defaultIceServers]
+    _peerConnection = [_factory peerConnectionWithICEServers:[self defaultIceServers]
                                                 constraints:[self defaultMediaConstraints]
                                                    delegate:self];
+    _accepted = NO;
     
-    RTCMediaStream *localStream = [factory mediaStreamWithLabel:@"localStream"];
-    RTCAudioTrack *audioTrack = [factory audioTrackWithID:@"audio0"];
-    [localStream addAudioTrack : audioTrack];
-
-    RTCSessionDescription *offer = [[RTCSessionDescription alloc] initWithType:@"offer" sdp:self.offer.content];
-    [_peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:offer];
+    NSLog(@"%s, presenting view with offer: %@", __FILE__, self.offer.content);
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -95,6 +93,8 @@ static NSString * const kARDDefaultSTUNServerUrl =
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
 didCreateSessionDescription:(RTCSessionDescription *)sdp error:(NSError *)error
 {
+    NSLog(@"%s, didCreateSessionDescription : %@:%@", __FILE__, sdp.type, sdp.description);
+    
     [_peerConnection setLocalDescriptionWithDelegate:self sessionDescription:sdp];
     
     // Send answer through the signaling channel of our application
@@ -109,14 +109,16 @@ didCreateSessionDescription:(RTCSessionDescription *)sdp error:(NSError *)error
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
 didSetSessionDescriptionWithError:(NSError *)error
 {
+    NSLog(@"%s, %s is called", __FILE__, __FUNCTION__);
+
     if (peerConnection.signalingState == RTCSignalingHaveLocalOffer) {
-        NSLog(@"have local offer");
+        NSLog(@"%s, have local offer", __FILE__);
     }else if (peerConnection.signalingState == RTCSignalingHaveRemoteOffer){
-        NSLog(@"have remote offer");
+        NSLog(@"%s, have remote offer", __FILE__);
         [_peerConnection createAnswerWithDelegate:self constraints:[self defaultAnswerConstraints]];
         
     }else if(peerConnection.signalingState == RTCSignalingHaveRemotePrAnswer){
-        NSLog(@"have remote answer");
+        NSLog(@"%s, have remote answer", __FILE__);
     }
 }
 
@@ -126,8 +128,11 @@ didSetSessionDescriptionWithError:(NSError *)error
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
            addedStream:(RTCMediaStream *)stream{
     // Create a new render view with a size of your choice
-    RTCEAGLVideoView *renderView = [[RTCEAGLVideoView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-    [stream.videoTracks.lastObject addRenderer:renderView];
+    NSLog(@"%s, %s is called", __FILE__, __FUNCTION__);
+    NSLog(@"%s, audio tracks: %lu", __FILE__, (unsigned long)stream.audioTracks.count);
+
+//    RTCEAGLVideoView *renderView = [[RTCEAGLVideoView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+//    [stream.videoTracks.lastObject addRenderer:renderView];
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
@@ -160,7 +165,7 @@ didSetSessionDescriptionWithError:(NSError *)error
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
        gotICECandidate:(RTCICECandidate *)candidate{
-    NSLog(@"got candidate from stun");
+    NSLog(@"%s, got candidate : %@", __FILE__, candidate.sdp);
     Message *message = [[Message alloc] initWithPeerUID:self.peer.uniqueID
                                                    Type:@"signal"
                                                 SubType:@"candidate"
@@ -191,13 +196,70 @@ didSetSessionDescriptionWithError:(NSError *)error
             if (error) {
                 NSLog(@"error serialize candidate string!");
             }else{
-                NSLog(@"got candidate from peer");
+                NSLog(@"%s, got candidate from peer: %@", __FILE__, message.content);
 
                 RTCICECandidate *candidate = [RTCICECandidate candidateFromJSONDictionary:dic];
                 [_peerConnection addICECandidate:candidate];
             }
+        }else if([message.subtype isEqualToString:@"close"]){
+            [self handleRemoteHangup];
         }
     }
+}
+
+- (void)handleRemoteHangup{
+    [_peerConnection close];
+    
+    //TODO play busy tone
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (IBAction)acceptButtonPressed:(id)sender{
+    if (_accepted) {
+        //close pc
+        //dismiss this vc
+        [self sendCloseSignal];
+        [_peerConnection close];
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+    }else{
+        NSLog(@"call accepted");
+        RTCSessionDescription *offer = [[RTCSessionDescription alloc] initWithType:@"offer" sdp:self.offer.content];
+        [_peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:offer];
+        
+        RTCMediaStream *localStream = [_factory mediaStreamWithLabel:@"localStream"];
+        RTCAudioTrack *audioTrack = [_factory audioTrackWithID:@"audio0"];
+        [localStream addAudioTrack : audioTrack];
+        
+        [_peerConnection addStream:localStream];
+        
+        _accepted = YES;
+        
+        self.denyButton.hidden = YES;
+        
+        [self.acceptButton setTitle:@"Hangup" forState:UIControlStateNormal];
+    }
+}
+
+- (IBAction)denyButtonPressed:(id)sender{
+    //signal denied
+    //close pc
+    //dismiss this vc
+    NSLog(@"call denied");
+
+    [self sendCloseSignal];
+    [_peerConnection close];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)sendCloseSignal{
+    Message *message = [[Message alloc] initWithPeerUID:self.peer.uniqueID
+                                                   Type:@"signal"
+                                                SubType:@"close"
+                                                Content:@"call is denied"];
+    [self.socketIODelegate sendMessage:message];
 }
 
 @end

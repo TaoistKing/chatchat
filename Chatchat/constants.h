@@ -11,7 +11,8 @@
 
 #import <Foundation/Foundation.h>
 
-NSString *const kServerURL = @"http://192.168.127.241:3000";
-
+#define kServerURL  @"http://192.168.127.241:3000"
+#define kDefaultSTUNServerUrl  @"stun:stun.qq.com:3478"
+//@"stun:stun.l.google.com:19302"
 
 #endif /* constants_h */
