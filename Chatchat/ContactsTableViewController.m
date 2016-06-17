@@ -77,10 +77,15 @@ UISearchResultsUpdating, SocketIODelegate>
         [self.tableView reloadData];
     }else{
         
-         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"input your host" message:nil preferredStyle:UIAlertControllerStyleAlert];
+#ifdef TEST
+        _hostAddr = @"192.168.127.241";
+        [self setupSocketIO];
+#else
+         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Input Your Host" message:nil preferredStyle:UIAlertControllerStyleAlert];
          [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
              textField.textAlignment = NSTextAlignmentCenter;
              textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+             textField.placeholder = @"e.g. 192.168.1.100";
              [textField setKeyboardType:UIKeyboardTypeDecimalPad];
              _inputTextField = textField;
          }];
@@ -92,9 +97,9 @@ UISearchResultsUpdating, SocketIODelegate>
              });
          }]];
          [self presentViewController:alert animated:YES completion:nil];
-        
     }
-    
+#endif
+
     if (!_connectionTimer) {
         _connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
                                                             target:self
@@ -206,6 +211,7 @@ UISearchResultsUpdating, SocketIODelegate>
                                               options:NSJSONReadingAllowFragments
                                                 error:nil];
     }
+    
     Message *message = [[Message alloc] init];
     message.from = [dic objectForKey:@"from"];
     message.to = [dic objectForKey:@"to"];
@@ -214,6 +220,12 @@ UISearchResultsUpdating, SocketIODelegate>
     message.type = [dic objectForKey:@"type"];
     message.subtype = [dic objectForKey:@"subtype"];
     
+    if (![message.to isEqualToString:[_userManager localUser].uniqueID] &&
+        ![message.to isEqualToString:@"all"]) {
+        //not my message
+        return;
+    }
+
     if ([message.type isEqualToString:@"signal"]) {
         [self handleSignalMessage : message];
     }else if([message.type isEqualToString:@"text"]){
@@ -222,33 +234,35 @@ UISearchResultsUpdating, SocketIODelegate>
 }
 
 - (void)handleSignalMessage : (Message *)message{
-    if ([message.subtype isEqualToString:@"offer"]) {
-        //got offer
-        [self presentIncomingCallViewController:message];
-    }else if ([message.subtype isEqualToString:@"candidate"] ||
-              [message.subtype isEqualToString:@"answer"] ||
-              [message.subtype isEqualToString:@"close"]){
-        //handle candidate when IncomingCallVC is not created yet.
-        UIViewController *vc = self.presentedViewController;
-        if ([vc isKindOfClass:[IncomingCallViewController class]]) {
-            IncomingCallViewController *icvc = (IncomingCallViewController *)vc;
-            [icvc onMessage:message];
-        }else if([vc isKindOfClass:[VoiceCallViewController class]]){
-            VoiceCallViewController *vcvc = (VoiceCallViewController *)vc;
-            [vcvc onMessage:message];
-        }else{
-            //received candidates when calling view not presented
-            [_unReadSignalingMessages addObject:message];
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+        if ([message.subtype isEqualToString:@"offer"]) {
+            //got offer in background
+            [self handleIncomingCallInBackground : message];
+        }
+    }else{
+        if ([message.subtype isEqualToString:@"offer"]) {
+            //got offer
+            [self presentIncomingCallViewController:message];
+        }else if ([message.subtype isEqualToString:@"candidate"] ||
+                  [message.subtype isEqualToString:@"answer"] ||
+                  [message.subtype isEqualToString:@"close"]){
+            //handle candidate when IncomingCallVC is not created yet.
+            UIViewController *vc = self.presentedViewController;
+            if ([vc isKindOfClass:[IncomingCallViewController class]]) {
+                IncomingCallViewController *icvc = (IncomingCallViewController *)vc;
+                [icvc onMessage:message];
+            }else if([vc isKindOfClass:[VoiceCallViewController class]]){
+                VoiceCallViewController *vcvc = (VoiceCallViewController *)vc;
+                [vcvc onMessage:message];
+            }else{
+                //received candidates when calling view not presented
+                [_unReadSignalingMessages addObject:message];
+            }
         }
     }
 }
 
 - (void)handleTextMessage : (Message *)message{
-    if (![message.to isEqualToString:[_userManager localUser].uniqueID] &&
-        ![message.to isEqualToString:@"all"]) {
-        //not my message
-        return;
-    }
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
         [self handleBackgroundMessage: message];
     }else{
@@ -345,6 +359,13 @@ UISearchResultsUpdating, SocketIODelegate>
     [session onUnreadMessage:message];
     
     NSString *notificationString = [NSString stringWithFormat:@"%@:%@", user.name, message.content];
+    [self showLocalNotification: notificationString];
+}
+
+- (void)handleIncomingCallInBackground : (Message *)message{
+    User *user = [_userManager findUserByUID:message.from];
+
+    NSString *notificationString = [NSString stringWithFormat:@"%@ is calling you", user.name];
     [self showLocalNotification: notificationString];
 }
 
