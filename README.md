@@ -13,6 +13,7 @@ Source             : https://chromium.googlesource.com/external/webrtc
 
 #About Socket.io
 Socket.IO is a JavaScript library for realtime web applications. It enables realtime, bi-directional communication between web clients and servers. It has two parts: a client-side library that runs in the browser, and a server-side library for node.js. Both components have a nearly identical API. Like node.js, it is event-driven.
+
 Socket.IO primarily uses the WebSocket protocol with polling as a fallback option, while providing the same interface. Although it can be used as simply a wrapper for WebSocket, it provides many more features, including broadcasting to multiple sockets, storing data associated with each client, and asynchronous I/O.
 
 Home page              : http://socket.io/
@@ -33,7 +34,7 @@ npm install
 node index.js
 ```
 ##run your web client
-Open [localhost:3000](http://localhost:3000) on your browser 
+- open [localhost:3000](http://localhost:3000) on your browser 
 
 >Note: currently the web client only supports text message, and all messages sent from Web will be broadcast message
 
