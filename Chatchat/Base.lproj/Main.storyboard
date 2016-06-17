@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="E4g-GR-9A5">
-                            <rect key="frame" x="0.0" y="152" width="600" height="44"/>
+                            <rect key="frame" x="0.0" y="620" width="600" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -239,17 +239,26 @@
                                     <action selector="denyButtonPressed:" destination="ULj-5a-tS1" eventType="touchDown" id="bQu-gc-SL9"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g26-sF-Rfk">
+                                <rect key="frame" x="252" y="136" width="97" height="43"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="g26-sF-Rfk" firstAttribute="centerY" secondItem="o9N-HM-KEj" secondAttribute="centerY" multiplier="0.5" id="3JX-RA-We4"/>
                             <constraint firstItem="t41-zX-r1V" firstAttribute="centerX" secondItem="o9N-HM-KEj" secondAttribute="centerX" id="Ozw-YT-5z6"/>
                             <constraint firstItem="t41-zX-r1V" firstAttribute="centerY" secondItem="o9N-HM-KEj" secondAttribute="centerY" multiplier="1.5" id="WVz-vg-eDk"/>
+                            <constraint firstItem="g26-sF-Rfk" firstAttribute="centerX" secondItem="o9N-HM-KEj" secondAttribute="centerX" id="a3R-jG-H1W"/>
                             <constraint firstItem="w54-8V-dyi" firstAttribute="top" secondItem="t41-zX-r1V" secondAttribute="bottom" constant="34" id="l3n-Ng-fzm"/>
                             <constraint firstItem="w54-8V-dyi" firstAttribute="centerX" secondItem="o9N-HM-KEj" secondAttribute="centerX" id="u5O-d0-FMV"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="acceptButton" destination="t41-zX-r1V" id="wIV-ny-sC0"/>
+                        <outlet property="callTitle" destination="g26-sF-Rfk" id="2EJ-QH-4rY"/>
                         <outlet property="denyButton" destination="w54-8V-dyi" id="X8Q-hI-bLJ"/>
                     </connections>
                 </viewController>

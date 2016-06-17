@@ -37,7 +37,7 @@
 
 @property (strong) IBOutlet UIButton *acceptButton;
 @property (strong) IBOutlet UIButton *denyButton;
-
+@property (strong) IBOutlet UILabel  *callTitle;
 @end
 
 @implementation IncomingCallViewController
@@ -68,6 +68,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    self.callTitle.text = [NSString stringWithFormat:@"Call From %@", self.peer.name];
     
     [RTCPeerConnectionFactory initializeSSL];
     _factory = [[RTCPeerConnectionFactory alloc] init];
@@ -77,6 +78,15 @@
                                                    delegate:self];
     _accepted = NO;
     
+    RTCSessionDescription *offer = [[RTCSessionDescription alloc] initWithType:@"offer" sdp:self.offer.content];
+    [_peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:offer];
+    
+    RTCMediaStream *localStream = [_factory mediaStreamWithLabel:@"localStream"];
+    RTCAudioTrack *audioTrack = [_factory audioTrackWithID:@"audio0"];
+    [localStream addAudioTrack : audioTrack];
+    
+    [_peerConnection addStream:localStream];
+
     NSLog(@"%s, presenting view with offer: %@", __FILE__, self.offer.content);
 }
 
@@ -115,7 +125,6 @@ didSetSessionDescriptionWithError:(NSError *)error
         NSLog(@"%s, have local offer", __FILE__);
     }else if (peerConnection.signalingState == RTCSignalingHaveRemoteOffer){
         NSLog(@"%s, have remote offer", __FILE__);
-        [_peerConnection createAnswerWithDelegate:self constraints:[self defaultAnswerConstraints]];
         
     }else if(peerConnection.signalingState == RTCSignalingHaveRemotePrAnswer){
         NSLog(@"%s, have remote answer", __FILE__);
@@ -226,15 +235,9 @@ didSetSessionDescriptionWithError:(NSError *)error
         
     }else{
         NSLog(@"call accepted");
-        RTCSessionDescription *offer = [[RTCSessionDescription alloc] initWithType:@"offer" sdp:self.offer.content];
-        [_peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:offer];
         
-        RTCMediaStream *localStream = [_factory mediaStreamWithLabel:@"localStream"];
-        RTCAudioTrack *audioTrack = [_factory audioTrackWithID:@"audio0"];
-        [localStream addAudioTrack : audioTrack];
-        
-        [_peerConnection addStream:localStream];
-        
+        [_peerConnection createAnswerWithDelegate:self constraints:[self defaultAnswerConstraints]];
+
         _accepted = YES;
         
         self.denyButton.hidden = YES;
