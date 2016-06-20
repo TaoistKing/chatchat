@@ -447,21 +447,32 @@ UISearchResultsUpdating, SocketIODelegate>
         return;
     }
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Select Action" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Chat" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Select Action"
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Chat"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * _Nonnull action) {
         //chat selected
         [self presentChatViewControllerWithPeer:selectedUser];
     }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Voice Chat" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alert addAction:[UIAlertAction actionWithTitle:@"Voice Chat"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * _Nonnull action) {
         //Voice chat selected
         [self presentVoiceCallViewControllerWithPeer:selectedUser];
     }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Video Chat" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alert addAction:[UIAlertAction actionWithTitle:@"Video Chat"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * _Nonnull action) {
         //Video Chat selected
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    
-    [self presentViewController:alert animated:YES completion:nil];
+
+    //If call presentViewController directly, there will be several seconds lag before actionsheet actually popup
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:alert animated:YES completion:nil];
+    });
 }
 
 - (void)presentChatViewControllerWithPeer: (User *)user{
