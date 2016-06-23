@@ -28,4 +28,6 @@
 - (User *)localUser;
 - (void)setLocalUserWithName: (NSString *)name UID: (NSString *)uid;
 
+- (void)replaceAllUsersWithNewUsers : (NSArray<User *> *)users;
+
 @end

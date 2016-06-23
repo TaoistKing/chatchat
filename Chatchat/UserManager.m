@@ -102,4 +102,16 @@
     [self addUser:_localUser];
 }
 
+- (void)replaceAllUsersWithNewUsers : (NSArray<User *> *)users{
+    @synchronized(self) {
+        [self removeAllUsers];
+        for (User *item in users) {
+            if (![self isUserExist:item.uniqueID]) {
+                [self addUser:item];
+            }
+        }
+    }
+}
+
+
 @end

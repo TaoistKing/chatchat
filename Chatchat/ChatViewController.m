@@ -129,11 +129,8 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
-    Message *message = [[Message alloc] init];
-    message.type = @"text";
-    message.from = [_userManager localUser].uniqueID;
-    message.to = self.peer.uniqueID;
-    message.content = textField.text;
+    Message *message = [Message textMessageWithPeerUID:self.peer.uniqueID
+                                               content:textField.text];
     [self.socketIODelegate sendMessage:message];
     
     //'received' a local message

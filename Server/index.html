@@ -37,7 +37,7 @@
 
       $('form').submit(function(){
         var ds = (new Date()).toISOString().replace(/[^0-9]/g, "");
-        var message = {from: uuid, to: 'all', content: $('#m').val(), time: ds};
+        var message = {from: uuid, to: 'all', content: $('#m').val(), time: ds, type: 'text', subtype: 'text'};
         socket.emit('chat message', message);
         $('#m').val('');
         $('#messages').append($('<li>').text(message.content));

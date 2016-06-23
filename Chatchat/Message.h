@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+#define kMessageType_Signal @"signal"
+#define kMessageType_Text   @"text"
+
+#define kMessageSubtype_Offer     @"offer"
+#define kMessageSubtype_Answer    @"answer"
+#define kMessageSubtype_Candidate @"candidate"
+#define kMessageSubtype_Close     @"close"
+#define kMessageSubtype_Placeholder     @"placehoder"
+
 @interface Message : NSObject
 @property NSString *from;
 @property NSString *to;
@@ -22,5 +31,8 @@
                             Type: (NSString *)type
                          SubType: (NSString *)subtype
                          Content: (NSString *)content;
+
++ (instancetype)textMessageWithPeerUID : (NSString *)peerUID
+                               content : (NSString *)content;
 
 @end

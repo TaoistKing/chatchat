@@ -337,11 +337,12 @@ UISearchResultsUpdating, SocketIODelegate>
                                             NSLog(@"error jsonserialize : %@", error2);
                                         }
                                         NSLog(@"all users: %@", users);
+                                        
+                                        NSMutableArray *userArray = [NSMutableArray array];
                                         for (NSDictionary *item in users) {
-                                            if ([_userManager findUserByUID:[item objectForKey:@"id"]] == nil) {
-                                                [_userManager addUserWithUID:[item objectForKey:@"id"] name:[item objectForKey:@"name"]];
-                                            }
+                                            [userArray addObject:[[User alloc] initWithName:[item objectForKey:@"name"] UID:[item objectForKey:@"id"]]];
                                         }
+                                        [[UserManager sharedManager] replaceAllUsersWithNewUsers:userArray];
                                         
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                             [self.tableView reloadData];

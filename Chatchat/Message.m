@@ -39,4 +39,18 @@
     return self;
 }
 
++ (instancetype)textMessageWithPeerUID : (NSString *)peerUID
+                               content : (NSString *)content{
+    Message *message = [[Message alloc] init];
+    message.type = kMessageType_Text;
+    message.subtype = kMessageSubtype_Placeholder;
+    message.from = [[UserManager sharedManager] localUser].uniqueID;
+    message.to = peerUID;
+    message.content = content;
+    message.time = @"";
+    
+    return message;
+}
+
+
 @end
