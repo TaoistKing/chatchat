@@ -17,4 +17,8 @@
 - (void)sendMessage : (Message *)message;
 @end
 
+@protocol MessageReciver <NSObject>
+- (void)onMessage: (Message *)message;
+@end
+
 #endif /* CommonDefines_h */

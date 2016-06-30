@@ -13,6 +13,7 @@
 #import "ChatSessionManager.h"
 #import "UserManager.h"
 #import "VoiceCallViewController.h"
+#import "VideoCallViewController.h"
 #import "IncomingCallViewController.h"
 
 @interface ContactsTableViewController () <UISearchControllerDelegate,
@@ -254,6 +255,9 @@ UISearchResultsUpdating, SocketIODelegate>
             }else if([vc isKindOfClass:[VoiceCallViewController class]]){
                 VoiceCallViewController *vcvc = (VoiceCallViewController *)vc;
                 [vcvc onMessage:message];
+            }else if([vc isKindOfClass:[VideoCallViewController class]]){
+                VideoCallViewController *vcvc = (VideoCallViewController *)vc;
+                [vcvc onMessage:message];
             }else{
                 //received candidates when calling view not presented
                 [_unReadSignalingMessages addObject:message];
@@ -413,17 +417,22 @@ UISearchResultsUpdating, SocketIODelegate>
     }else{
         ChatSession *session = [_sessionManager createSessionWithPeer:user];
         if (session.unreadCount > 0) {
-            NSString *title = [NSString stringWithFormat:@"%lu unread", (unsigned long)[session unreadCount]];
+            NSString *title = [NSString stringWithFormat:@"%lu", (unsigned long)(([session unreadCount] < 100) ? [session unreadCount] : 99)];
             UIButton *detailButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [detailButton setTitle:title forState:UIControlStateNormal];
-            [detailButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-            [detailButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+            [detailButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [detailButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
             [detailButton addTarget:self action:@selector(detailButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            CGFloat height = [tableView rectForRowAtIndexPath:indexPath].size.height * 0.85;
-            CGFloat width = [tableView rectForRowAtIndexPath:indexPath].size.width * 0.4;
-
+            CGFloat height = [tableView rectForRowAtIndexPath:indexPath].size.height * 0.3;
+//            CGFloat width = [tableView rectForRowAtIndexPath:indexPath].size.width * 0.4;
+            CGFloat width = height;
+            
             detailButton.frame = CGRectMake(0, 0, width, height);
             detailButton.tag = indexPath.row;
+            detailButton.backgroundColor = [UIColor redColor];
+            detailButton.layer.cornerRadius = height / 2;
+            detailButton.layer.masksToBounds = YES;
+            
             cell.accessoryView = detailButton;
         }
     }
@@ -467,6 +476,7 @@ UISearchResultsUpdating, SocketIODelegate>
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * _Nonnull action) {
         //Video Chat selected
+        [self presentVideoCallViewControllerWithPeer:selectedUser];
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
 
@@ -488,6 +498,15 @@ UISearchResultsUpdating, SocketIODelegate>
 - (void)presentVoiceCallViewControllerWithPeer: (User *)user{
     UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     VoiceCallViewController *vcvc = [sb instantiateViewControllerWithIdentifier:@"VoiceCallViewController"];
+    vcvc.socketIODelegate = self;
+    vcvc.peer = user;
+    
+    [self presentViewController:vcvc animated:YES completion:nil];
+}
+
+- (void)presentVideoCallViewControllerWithPeer: (User *)user{
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    VideoCallViewController *vcvc = [sb instantiateViewControllerWithIdentifier:@"VideoCallViewController"];
     vcvc.socketIODelegate = self;
     vcvc.peer = user;
     

@@ -5,6 +5,7 @@
 //  Created by WangRui on 16/6/8.
 //  Copyright © 2016年 Beta.Inc. All rights reserved.
 //
+#import <AVFoundation/AVFoundation.h>
 
 #import "IncomingCallViewController.h"
 
@@ -22,6 +23,7 @@
 #import "RTCEAGLVideoView.h"
 #import "RTCICEServer.h"
 #import "RTCICECandidate.h"
+#import "RTCAVFoundationVideoSource.h"
 
 #import "RTCICECandidate+JSON.h"
 
@@ -32,7 +34,16 @@
 {
     RTCPeerConnectionFactory *_factory;
     RTCPeerConnection *_peerConnection;
+    
+    RTCVideoTrack *_localVideoTrack;
+    RTCVideoTrack *_remoteVideoTrack;
+    
     BOOL _accepted;
+    
+    BOOL _videoEnabled;
+    UIView *_cameraPreviewView;
+    AVCaptureSession *_captureSession;
+
 }
 
 @property (strong) IBOutlet UIButton *acceptButton;
@@ -57,6 +68,17 @@
     return constraints;
 }
 
+- (RTCMediaConstraints *)defaultVideoAnswerConstraints{
+    NSArray *mandatoryConstraints = @[
+                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
+                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]
+                                      ];
+    RTCMediaConstraints* constraints =
+    [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints
+                                          optionalConstraints:nil];
+    return constraints;
+}
+
 
 - (NSArray *)defaultIceServers{
     NSURL *defaultSTUNServerURL = [NSURL URLWithString:kDefaultSTUNServerUrl];
@@ -68,7 +90,22 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    self.callTitle.text = [NSString stringWithFormat:@"Call From %@", self.peer.name];
+    
+    _videoEnabled = NO;
+    _cameraPreviewView = nil;
+    _captureSession = nil;
+    _accepted = NO;
+    
+    _localVideoTrack = nil;
+    _remoteVideoTrack = nil;
+
+    NSString *title = [NSString stringWithFormat:@"Call From %@", self.peer.name];
+    if ([self.offer.content containsString:@"video"]) {
+        _videoEnabled = YES;
+        title = [NSString stringWithFormat:@"Video Call From %@", self.peer.name];
+    }
+
+    self.callTitle.text = title;
     
     [RTCPeerConnectionFactory initializeSSL];
     _factory = [[RTCPeerConnectionFactory alloc] init];
@@ -76,7 +113,6 @@
     _peerConnection = [_factory peerConnectionWithICEServers:[self defaultIceServers]
                                                 constraints:[self defaultMediaConstraints]
                                                    delegate:self];
-    _accepted = NO;
     
     RTCSessionDescription *offer = [[RTCSessionDescription alloc] initWithType:@"offer" sdp:self.offer.content];
     [_peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:offer];
@@ -84,6 +120,21 @@
     RTCMediaStream *localStream = [_factory mediaStreamWithLabel:@"localStream"];
     RTCAudioTrack *audioTrack = [_factory audioTrackWithID:@"audio0"];
     [localStream addAudioTrack : audioTrack];
+    
+    if (_videoEnabled) {
+        RTCAVFoundationVideoSource *source = [[RTCAVFoundationVideoSource alloc]
+                                              initWithFactory:_factory
+                                              constraints:[self defaultMediaConstraints]];
+        
+        RTCVideoTrack *localVideoTrack = [[RTCVideoTrack alloc]
+                                          initWithFactory:_factory
+                                          source:source
+                                          trackId:@"video0"];
+        
+        [localStream addVideoTrack:localVideoTrack];
+        _captureSession = source.captureSession;
+        _localVideoTrack = localVideoTrack;
+    }
     
     [_peerConnection addStream:localStream];
 
@@ -98,6 +149,40 @@
         [self onMessage:item];
     }
 }
+
+- (void)startPreviewWithSession : (AVCaptureSession *)session{
+    if (_cameraPreviewView.superview == self.view) {
+        return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AVCaptureVideoPreviewLayer *layer = [AVCaptureVideoPreviewLayer layerWithSession:session];
+        _cameraPreviewView = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 100, 0, 100, 150)];
+        layer.frame = _cameraPreviewView.bounds;//I have no idea why I have to add this line.
+        [_cameraPreviewView.layer addSublayer:layer];
+        
+        [self.view addSubview:_cameraPreviewView];
+        
+        [self.view bringSubviewToFront:self.callTitle];
+        [self.view bringSubviewToFront:self.acceptButton];
+        
+    });
+}
+
+- (void)startRemoteVideo{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        RTCEAGLVideoView *renderView = [[RTCEAGLVideoView alloc] initWithFrame:self.view.bounds];
+        [_remoteVideoTrack addRenderer:renderView];
+        [self.view addSubview:renderView];
+        
+        if (_cameraPreviewView) {
+            [self.view bringSubviewToFront:_cameraPreviewView];
+        }
+        [self.view bringSubviewToFront:self.acceptButton];
+        [self.view bringSubviewToFront:self.callTitle];
+
+    });
+}
+
 
 #pragma mark -- RTCSessionDescriptionDelegate --
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
@@ -139,9 +224,11 @@ didSetSessionDescriptionWithError:(NSError *)error
     // Create a new render view with a size of your choice
     NSLog(@"%s, %s is called", __FILE__, __FUNCTION__);
     NSLog(@"%s, audio tracks: %lu", __FILE__, (unsigned long)stream.audioTracks.count);
+    NSLog(@"%s, video tracks: %lu", __FILE__, (unsigned long)stream.videoTracks.count);
 
-//    RTCEAGLVideoView *renderView = [[RTCEAGLVideoView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-//    [stream.videoTracks.lastObject addRenderer:renderView];
+    if (stream.videoTracks.count) {
+        _remoteVideoTrack = [stream.videoTracks lastObject];
+    }
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
@@ -236,13 +323,24 @@ didSetSessionDescriptionWithError:(NSError *)error
     }else{
         NSLog(@"call accepted");
         
-        [_peerConnection createAnswerWithDelegate:self constraints:[self defaultAnswerConstraints]];
+        RTCMediaConstraints *constraints = [self defaultAnswerConstraints];
+        if (_videoEnabled) {
+            constraints = [self defaultVideoAnswerConstraints];
+        }
+        [_peerConnection createAnswerWithDelegate:self constraints:constraints];
 
         _accepted = YES;
         
         self.denyButton.hidden = YES;
         
         [self.acceptButton setTitle:@"Hangup" forState:UIControlStateNormal];
+        
+        if (_videoEnabled) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self startPreviewWithSession:_captureSession];
+                [self startRemoteVideo];
+            });
+        }
     }
 }
 

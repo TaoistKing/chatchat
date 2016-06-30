@@ -9,10 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "CommonDefines.h"
 
-@interface ChatViewController : UIViewController
+@interface ChatViewController : UIViewController <MessageReciver>
+
 @property (weak) id<SocketIODelegate> socketIODelegate;
 @property (weak) User *peer;
-
-- (void)onMessage: (Message *)message;
 
 @end

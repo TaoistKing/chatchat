@@ -18,6 +18,7 @@
 		1A8EBF4C1CFFDB080037BABB /* ChatSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF4B1CFFDB040037BABB /* ChatSession.m */; };
 		1A8EBF4F1CFFDF9C0037BABB /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF4E1CFFDF9C0037BABB /* UserManager.m */; };
 		1A8EBF521CFFE3450037BABB /* ChatSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF511CFFE3450037BABB /* ChatSessionManager.m */; };
+		1ABCAACA1D1D051A0087E1CA /* VideoCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ABCAAC91D1D05190087E1CA /* VideoCallViewController.m */; };
 		B2CDF06B1CF6DDBA00FCECA8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF06A1CF6DDBA00FCECA8 /* main.m */; };
 		B2CDF06E1CF6DDBA00FCECA8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF06D1CF6DDBA00FCECA8 /* AppDelegate.m */; };
 		B2CDF0741CF6DDBB00FCECA8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CDF0721CF6DDBB00FCECA8 /* Main.storyboard */; };
@@ -47,6 +48,8 @@
 		1A8EBF4E1CFFDF9C0037BABB /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
 		1A8EBF501CFFE3450037BABB /* ChatSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatSessionManager.h; sourceTree = "<group>"; };
 		1A8EBF511CFFE3450037BABB /* ChatSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatSessionManager.m; sourceTree = "<group>"; };
+		1ABCAAC81D1D05190087E1CA /* VideoCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCallViewController.h; sourceTree = "<group>"; };
+		1ABCAAC91D1D05190087E1CA /* VideoCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCallViewController.m; sourceTree = "<group>"; };
 		23B859805FBE0EB62D7114E0 /* Pods-Chatchat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatchat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Chatchat/Pods-Chatchat.debug.xcconfig"; sourceTree = "<group>"; };
 		A50343BB10F4589FD3C9335A /* Pods-Chatchat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatchat.release.xcconfig"; path = "Pods/Target Support Files/Pods-Chatchat/Pods-Chatchat.release.xcconfig"; sourceTree = "<group>"; };
 		B2CDF0661CF6DDBA00FCECA8 /* Chatchat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chatchat.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +85,8 @@
 				1A8EBF411CFE80410037BABB /* ChatViewController.m */,
 				1A03B0831D06CFE200E72938 /* VoiceCallViewController.h */,
 				1A03B0841D06CFE200E72938 /* VoiceCallViewController.m */,
+				1ABCAAC81D1D05190087E1CA /* VideoCallViewController.h */,
+				1ABCAAC91D1D05190087E1CA /* VideoCallViewController.m */,
 				1A03B09D1D08198F00E72938 /* IncomingCallViewController.h */,
 				1A03B09E1D08198F00E72938 /* IncomingCallViewController.m */,
 				1A03B09A1D08120700E72938 /* RTCICECandidate+JSON.h */,
@@ -175,7 +180,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2CDF07D1CF6DDBB00FCECA8 /* Build configuration list for PBXNativeTarget "Chatchat" */;
 			buildPhases = (
-				419EBDE2A7F3C4E3B9357C59 /* 📦 Check Pods Manifest.lock */,
+				419EBDE2A7F3C4E3B9357C59 /* [CP] Check Pods Manifest.lock */,
 				819A37B32909F05C63604591 /* [CP] Check Pods Manifest.lock */,
 				B2CDF0621CF6DDBA00FCECA8 /* Sources */,
 				B2CDF0631CF6DDBA00FCECA8 /* Frameworks */,
@@ -261,14 +266,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Chatchat/Pods-Chatchat-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		419EBDE2A7F3C4E3B9357C59 /* 📦 Check Pods Manifest.lock */ = {
+		419EBDE2A7F3C4E3B9357C59 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,6 +360,7 @@
 				1A8EBF4C1CFFDB080037BABB /* ChatSession.m in Sources */,
 				1A8EBF491CFECC640037BABB /* Message.m in Sources */,
 				1A03B0851D06CFE200E72938 /* VoiceCallViewController.m in Sources */,
+				1ABCAACA1D1D051A0087E1CA /* VideoCallViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
