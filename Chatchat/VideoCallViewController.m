@@ -30,7 +30,8 @@
 
 #import "constants.h"
 
-@interface VideoCallViewController () <RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
+@interface VideoCallViewController () <RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate,
+RTCEAGLVideoViewDelegate>
 {
     RTCPeerConnectionFactory *_factory;
     RTCPeerConnection *_peerConnection;
@@ -186,6 +187,12 @@
 }
 
 
+#pragma mark -- RTCEAGLVideoViewDelegate --
+- (void)videoView:(RTCEAGLVideoView*)videoView didChangeVideoSize:(CGSize)size{
+    NSLog(@"Video size changed to: %d, %d", (int)size.width, (int)size.height);
+}
+
+
 #pragma mark -- RTCSessionDescriptionDelegate --
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
 didCreateSessionDescription:(RTCSessionDescription *)sdp error:(NSError *)error
@@ -232,6 +239,7 @@ didSetSessionDescriptionWithError:(NSError *)error
         dispatch_async(dispatch_get_main_queue(), ^{
             // Create a new render view with a size of your choice
             RTCEAGLVideoView *renderView = [[RTCEAGLVideoView alloc] initWithFrame:self.view.bounds];
+            renderView.delegate = self;
             [_remoteVideoTrack addRenderer:renderView];
             [self.view addSubview:renderView];
             if (_cameraPreviewView) {

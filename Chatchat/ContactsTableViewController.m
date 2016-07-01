@@ -82,24 +82,10 @@ UISearchResultsUpdating, SocketIODelegate>
         _hostAddr = @"192.168.127.241";
         [self setupSocketIO];
 #else
-         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Input Your Host" message:nil preferredStyle:UIAlertControllerStyleAlert];
-         [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-             textField.textAlignment = NSTextAlignmentCenter;
-             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-             textField.placeholder = @"e.g. 192.168.1.100";
-             [textField setKeyboardType:UIKeyboardTypeDecimalPad];
-             _inputTextField = textField;
-         }];
-         [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-             _hostAddr = _inputTextField.text;
-             NSLog(@"server addr : %@", _hostAddr);
-             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                 [self setupSocketIO];
-             });
-         }]];
-         [self presentViewController:alert animated:YES completion:nil];
-    }
+        [self showServerInputView];
 #endif
+    }
+
 
     if (!_connectionTimer) {
         _connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
@@ -108,6 +94,25 @@ UISearchResultsUpdating, SocketIODelegate>
                                                           userInfo:nil
                                                            repeats:YES];
     }
+}
+
+- (void)showServerInputView{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Input Your Host" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.textAlignment = NSTextAlignmentCenter;
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.placeholder = @"e.g. 192.168.1.100";
+        [textField setKeyboardType:UIKeyboardTypeDecimalPad];
+        _inputTextField = textField;
+    }];
+    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        _hostAddr = _inputTextField.text;
+        NSLog(@"server addr : %@", _hostAddr);
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self setupSocketIO];
+        });
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)checkConnection{
@@ -387,6 +392,15 @@ UISearchResultsUpdating, SocketIODelegate>
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
+
+- (IBAction)LeftBarButtonPressed:(id)sender{
+    if (_serverConnected) {
+        //refresh contacts
+    }else{
+        //show text inputview
+        [self showServerInputView];
+    }
+}
 
 #pragma mark - Table view data source
 

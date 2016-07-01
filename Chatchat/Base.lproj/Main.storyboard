@@ -53,7 +53,13 @@
                             <outlet property="delegate" destination="ydH-nB-n97" id="h0r-cP-gPw"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="ChatChat" id="gz2-gb-Aal"/>
+                    <navigationItem key="navigationItem" title="ChatChat" id="gz2-gb-Aal">
+                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="Ee0-H1-fhu">
+                            <connections>
+                                <action selector="LeftBarButtonPressed:" destination="ydH-nB-n97" id="bN5-dZ-5wb"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="footerLabel" destination="E4g-GR-9A5" id="crb-US-vh9"/>
                     </connections>
