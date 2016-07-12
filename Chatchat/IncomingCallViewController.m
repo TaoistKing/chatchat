@@ -8,37 +8,13 @@
 #import <AVFoundation/AVFoundation.h>
 
 #import "IncomingCallViewController.h"
-
-#import "RTCPeerConnectionFactory.h"
-#import "RTCPeerConnection.h"
-#import "RTCPeerConnectionDelegate.h"
-#import "RTCMediaConstraints.h"
-#import "RTCMediaStream.h"
-#import "RTCAudioTrack.h"
-#import "RTCVideoTrack.h"
-#import "RTCVideoCapturer.h"
-#import "RTCPair.h"
-#import "RTCSessionDescription.h"
-#import "RTCSessionDescriptionDelegate.h"
-#import "RTCEAGLVideoView.h"
-#import "RTCICEServer.h"
-#import "RTCICECandidate.h"
-#import "RTCAVFoundationVideoSource.h"
-
 #import "RTCICECandidate+JSON.h"
 
-#import "constants.h"
-
-
-@interface IncomingCallViewController () <RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate,
-RTCEAGLVideoViewDelegate>
+@interface IncomingCallViewController () <RTCEAGLVideoViewDelegate>
 {
-    RTCPeerConnectionFactory *_factory;
-    RTCPeerConnection *_peerConnection;
-    
     RTCVideoTrack *_localVideoTrack;
     RTCVideoTrack *_remoteVideoTrack;
-    
+
     BOOL _accepted;
     
     BOOL _videoEnabled;
@@ -53,10 +29,6 @@ RTCEAGLVideoViewDelegate>
 @end
 
 @implementation IncomingCallViewController
-
-- (RTCMediaConstraints *)defaultMediaConstraints{
-    return [[RTCMediaConstraints alloc] initWithMandatoryConstraints:nil optionalConstraints:nil];
-}
 
 - (RTCMediaConstraints *)defaultAnswerConstraints{
     NSArray *mandatoryConstraints = @[
@@ -80,15 +52,6 @@ RTCEAGLVideoViewDelegate>
     return constraints;
 }
 
-
-- (NSArray *)defaultIceServers{
-    NSURL *defaultSTUNServerURL = [NSURL URLWithString:kDefaultSTUNServerUrl];
-    
-    return @[[[RTCICEServer alloc] initWithURI:defaultSTUNServerURL
-                                      username:@""
-                                      password:@""]];
-}
-
 - (void)viewDidLoad{
     [super viewDidLoad];
     
@@ -108,27 +71,20 @@ RTCEAGLVideoViewDelegate>
 
     self.callTitle.text = title;
     
-    [RTCPeerConnectionFactory initializeSSL];
-    _factory = [[RTCPeerConnectionFactory alloc] init];
-    
-    _peerConnection = [_factory peerConnectionWithICEServers:[self defaultIceServers]
-                                                constraints:[self defaultMediaConstraints]
-                                                   delegate:self];
-    
     RTCSessionDescription *offer = [[RTCSessionDescription alloc] initWithType:@"offer" sdp:self.offer.content];
-    [_peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:offer];
+    [self.peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:offer];
     
-    RTCMediaStream *localStream = [_factory mediaStreamWithLabel:@"localStream"];
-    RTCAudioTrack *audioTrack = [_factory audioTrackWithID:@"audio0"];
+    RTCMediaStream *localStream = [self.factory mediaStreamWithLabel:@"localStream"];
+    RTCAudioTrack *audioTrack = [self.factory audioTrackWithID:@"audio0"];
     [localStream addAudioTrack : audioTrack];
     
     if (_videoEnabled) {
         RTCAVFoundationVideoSource *source = [[RTCAVFoundationVideoSource alloc]
-                                              initWithFactory:_factory
+                                              initWithFactory:self.factory
                                               constraints:[self defaultMediaConstraints]];
         
         RTCVideoTrack *localVideoTrack = [[RTCVideoTrack alloc]
-                                          initWithFactory:_factory
+                                          initWithFactory:self.factory
                                           source:source
                                           trackId:@"video0"];
         
@@ -137,7 +93,7 @@ RTCEAGLVideoViewDelegate>
         _localVideoTrack = localVideoTrack;
     }
     
-    [_peerConnection addStream:localStream];
+    [self.peerConnection addStream:localStream];
 
     NSLog(@"%s, presenting view with offer: %@", __FILE__, self.offer.content);
 }
@@ -190,15 +146,13 @@ RTCEAGLVideoViewDelegate>
     NSLog(@"Video size changed to: %d, %d", (int)size.width, (int)size.height);
 }
 
-#pragma mark -- RTCSessionDescriptionDelegate --
+#pragma mark -- RTCSessionDescriptionDelegate override --
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
 didCreateSessionDescription:(RTCSessionDescription *)sdp error:(NSError *)error
 {
-    NSLog(@"%s, didCreateSessionDescription : %@:%@", __FILE__, sdp.type, sdp.description);
+    [super peerConnection:peerConnection didCreateSessionDescription:sdp error:error];
     
-    [_peerConnection setLocalDescriptionWithDelegate:self sessionDescription:sdp];
-    
-    // Send answer through the signaling channel of our application
+    // Send offer through the signaling channel of our application
     Message *message = [[Message alloc] initWithPeerUID:self.peer.uniqueID
                                                    Type:@"signal"
                                                 SubType:@"answer"
@@ -207,80 +161,17 @@ didCreateSessionDescription:(RTCSessionDescription *)sdp error:(NSError *)error
     [self.socketIODelegate sendMessage:message];
 }
 
-- (void)peerConnection:(RTCPeerConnection *)peerConnection
-didSetSessionDescriptionWithError:(NSError *)error
-{
-    NSLog(@"%s, %s is called", __FILE__, __FUNCTION__);
-
-    if (peerConnection.signalingState == RTCSignalingHaveLocalOffer) {
-        NSLog(@"%s, have local offer", __FILE__);
-    }else if (peerConnection.signalingState == RTCSignalingHaveRemoteOffer){
-        NSLog(@"%s, have remote offer", __FILE__);
-        
-    }else if(peerConnection.signalingState == RTCSignalingHaveRemotePrAnswer){
-        NSLog(@"%s, have remote answer", __FILE__);
-    }
-}
-
-
-#pragma mark -- peerConnection delegate --
+#pragma mark -- peerConnection delegate override --
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
            addedStream:(RTCMediaStream *)stream{
     // Create a new render view with a size of your choice
-    NSLog(@"%s, %s is called", __FILE__, __FUNCTION__);
-    NSLog(@"%s, audio tracks: %lu", __FILE__, (unsigned long)stream.audioTracks.count);
-    NSLog(@"%s, video tracks: %lu", __FILE__, (unsigned long)stream.videoTracks.count);
-
+    [super peerConnection:peerConnection addedStream:stream];
+    
     if (stream.videoTracks.count) {
         _remoteVideoTrack = [stream.videoTracks lastObject];
     }
 }
-
-- (void)peerConnection:(RTCPeerConnection *)peerConnection
- signalingStateChanged:(RTCSignalingState)stateChanged{
-    
-}
-
-// Triggered when a remote peer close a stream.
-- (void)peerConnection:(RTCPeerConnection *)peerConnection
-         removedStream:(RTCMediaStream *)stream{
-    
-}
-
-// Triggered when renegotiation is needed, for example the ICE has restarted.
-- (void)peerConnectionOnRenegotiationNeeded:(RTCPeerConnection *)peerConnection{
-    
-}
-
-// Called any time the ICEConnectionState changes.
-- (void)peerConnection:(RTCPeerConnection *)peerConnection
-  iceConnectionChanged:(RTCICEConnectionState)newState{
-    
-}
-
-// Called any time the ICEGatheringState changes.
-- (void)peerConnection:(RTCPeerConnection *)peerConnection
-   iceGatheringChanged:(RTCICEGatheringState)newState{
-    
-}
-
-- (void)peerConnection:(RTCPeerConnection *)peerConnection
-       gotICECandidate:(RTCICECandidate *)candidate{
-    NSLog(@"%s, got candidate : %@", __FILE__, candidate.sdp);
-    Message *message = [[Message alloc] initWithPeerUID:self.peer.uniqueID
-                                                   Type:@"signal"
-                                                SubType:@"candidate"
-                                                Content:[candidate JSONString]];
-    [self.socketIODelegate sendMessage:message];
-}
-
-// New data channel has been opened.
-- (void)peerConnection:(RTCPeerConnection*)peerConnection
-    didOpenDataChannel:(RTCDataChannel*)dataChannel{
-    
-}
-
 
 - (void)onMessage: (Message *)message{
     if ([message.type isEqualToString:@"signal"]) {
@@ -301,7 +192,7 @@ didSetSessionDescriptionWithError:(NSError *)error
                 NSLog(@"%s, got candidate from peer: %@", __FILE__, message.content);
 
                 RTCICECandidate *candidate = [RTCICECandidate candidateFromJSONDictionary:dic];
-                [_peerConnection addICECandidate:candidate];
+                [self.peerConnection addICECandidate:candidate];
             }
         }else if([message.subtype isEqualToString:@"close"]){
             [self handleRemoteHangup];
@@ -310,7 +201,7 @@ didSetSessionDescriptionWithError:(NSError *)error
 }
 
 - (void)handleRemoteHangup{
-    [_peerConnection close];
+    [self.peerConnection close];
     
     //TODO play busy tone
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -322,7 +213,7 @@ didSetSessionDescriptionWithError:(NSError *)error
         //close pc
         //dismiss this vc
         [self sendCloseSignal];
-        [_peerConnection close];
+        [self.peerConnection close];
         
         [self dismissViewControllerAnimated:YES completion:nil];
         
@@ -333,7 +224,7 @@ didSetSessionDescriptionWithError:(NSError *)error
         if (_videoEnabled) {
             constraints = [self defaultVideoAnswerConstraints];
         }
-        [_peerConnection createAnswerWithDelegate:self constraints:constraints];
+        [self.peerConnection createAnswerWithDelegate:self constraints:constraints];
 
         _accepted = YES;
         
@@ -357,7 +248,7 @@ didSetSessionDescriptionWithError:(NSError *)error
     NSLog(@"call denied");
 
     [self sendCloseSignal];
-    [_peerConnection close];
+    [self.peerConnection close];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

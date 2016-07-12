@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+
 #import "CommonDefines.h"
+#import "OutgoingViewController.h"
 
-@interface VideoCallViewController : UIViewController <MessageReciver>
-
-@property (weak) id<SocketIODelegate> socketIODelegate;
-@property (weak) User *peer;
+@interface VideoCallViewController : OutgoingViewController
 
 @end

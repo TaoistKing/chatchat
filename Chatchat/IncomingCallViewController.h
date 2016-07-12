@@ -7,13 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+
 #import "CommonDefines.h"
-#import "RTCSessionDescription.h"
+#import "CallViewController.h"
 
-@interface IncomingCallViewController : UIViewController <MessageReciver>
-
-@property (weak) id<SocketIODelegate> socketIODelegate;
-@property (weak) User *peer;
+@interface IncomingCallViewController : CallViewController <MessageReciver>
 
 @property (strong) Message *offer;
 @property (strong) NSArray<Message *> *pendingMessages;

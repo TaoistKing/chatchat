@@ -18,6 +18,8 @@
 		1A8EBF4C1CFFDB080037BABB /* ChatSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF4B1CFFDB040037BABB /* ChatSession.m */; };
 		1A8EBF4F1CFFDF9C0037BABB /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF4E1CFFDF9C0037BABB /* UserManager.m */; };
 		1A8EBF521CFFE3450037BABB /* ChatSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF511CFFE3450037BABB /* ChatSessionManager.m */; };
+		1AB9EC671D33443200BCC48A /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB9EC661D33443200BCC48A /* CallViewController.m */; };
+		1AB9EC6A1D3350DC00BCC48A /* OutgoingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB9EC691D3350DC00BCC48A /* OutgoingViewController.m */; };
 		1ABCAACA1D1D051A0087E1CA /* VideoCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ABCAAC91D1D05190087E1CA /* VideoCallViewController.m */; };
 		B2CDF06B1CF6DDBA00FCECA8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF06A1CF6DDBA00FCECA8 /* main.m */; };
 		B2CDF06E1CF6DDBA00FCECA8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CDF06D1CF6DDBA00FCECA8 /* AppDelegate.m */; };
@@ -48,6 +50,10 @@
 		1A8EBF4E1CFFDF9C0037BABB /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
 		1A8EBF501CFFE3450037BABB /* ChatSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatSessionManager.h; sourceTree = "<group>"; };
 		1A8EBF511CFFE3450037BABB /* ChatSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatSessionManager.m; sourceTree = "<group>"; };
+		1AB9EC651D33443200BCC48A /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
+		1AB9EC661D33443200BCC48A /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
+		1AB9EC681D3350DC00BCC48A /* OutgoingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OutgoingViewController.h; sourceTree = "<group>"; };
+		1AB9EC691D3350DC00BCC48A /* OutgoingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutgoingViewController.m; sourceTree = "<group>"; };
 		1ABCAAC81D1D05190087E1CA /* VideoCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCallViewController.h; sourceTree = "<group>"; };
 		1ABCAAC91D1D05190087E1CA /* VideoCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCallViewController.m; sourceTree = "<group>"; };
 		23B859805FBE0EB62D7114E0 /* Pods-Chatchat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatchat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Chatchat/Pods-Chatchat.debug.xcconfig"; sourceTree = "<group>"; };
@@ -83,6 +89,10 @@
 				1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */,
 				1A8EBF401CFE80410037BABB /* ChatViewController.h */,
 				1A8EBF411CFE80410037BABB /* ChatViewController.m */,
+				1AB9EC651D33443200BCC48A /* CallViewController.h */,
+				1AB9EC661D33443200BCC48A /* CallViewController.m */,
+				1AB9EC681D3350DC00BCC48A /* OutgoingViewController.h */,
+				1AB9EC691D3350DC00BCC48A /* OutgoingViewController.m */,
 				1A03B0831D06CFE200E72938 /* VoiceCallViewController.h */,
 				1A03B0841D06CFE200E72938 /* VoiceCallViewController.m */,
 				1ABCAAC81D1D05190087E1CA /* VideoCallViewController.h */,
@@ -350,6 +360,7 @@
 			files = (
 				1A8EBF461CFECC540037BABB /* User.m in Sources */,
 				1A8EBF521CFFE3450037BABB /* ChatSessionManager.m in Sources */,
+				1AB9EC6A1D3350DC00BCC48A /* OutgoingViewController.m in Sources */,
 				1A03B09F1D08198F00E72938 /* IncomingCallViewController.m in Sources */,
 				1A8EBF421CFE80420037BABB /* ChatViewController.m in Sources */,
 				1A03B09C1D08120700E72938 /* RTCICECandidate+JSON.m in Sources */,
@@ -360,6 +371,7 @@
 				1A8EBF4C1CFFDB080037BABB /* ChatSession.m in Sources */,
 				1A8EBF491CFECC640037BABB /* Message.m in Sources */,
 				1A03B0851D06CFE200E72938 /* VoiceCallViewController.m in Sources */,
+				1AB9EC671D33443200BCC48A /* CallViewController.m in Sources */,
 				1ABCAACA1D1D051A0087E1CA /* VideoCallViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
