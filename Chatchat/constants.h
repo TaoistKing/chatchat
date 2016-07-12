@@ -12,7 +12,8 @@
 #import <Foundation/Foundation.h>
 
 #define kServerURL  @"http://192.168.127.241:3000"
-#define kDefaultSTUNServerUrl  @"stun:stun.qq.com:3478"
+#define kDefaultSTUNServerUrl  @"stun:stun.3cx.com:3478"
+//@"stun:stun.qq.com:3478"
 //@"stun:stun.l.google.com:19302"
 
 #endif /* constants_h */
