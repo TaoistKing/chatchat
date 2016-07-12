@@ -81,6 +81,14 @@ NSString *const RTCIceStateNames[] = {
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion{
+    [super dismissViewControllerAnimated:flag completion:completion];
+    
+    if (_statTimer) {
+        [_statTimer invalidate];
+    }
+}
+
 #pragma mark -- RTCSessionDescriptionDelegate --
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
 didCreateSessionDescription:(RTCSessionDescription *)sdp error:(NSError *)error
@@ -125,7 +133,7 @@ didSetSessionDescriptionWithError:(NSError *)error
 // Triggered when a remote peer close a stream.
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
          removedStream:(RTCMediaStream *)stream{
-    
+    NSLog(@"removed stream");
 }
 
 // Triggered when renegotiation is needed, for example the ICE has restarted.
