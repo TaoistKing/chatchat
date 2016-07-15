@@ -38,6 +38,7 @@
 @property (strong) User *peer;
 
 - (RTCMediaConstraints *)defaultMediaConstraints;
+- (RTCMediaConstraints *)defaultVideoConstraints;
 - (NSArray *)defaultIceServers;
 - (RTCMediaConstraints *)defaultPeerConnectionConstraints;
 

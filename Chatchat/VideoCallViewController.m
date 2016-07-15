@@ -25,16 +25,6 @@
 
 @implementation VideoCallViewController
 
-- (RTCMediaConstraints *)defaultVideoConstraints{
-    float screenRatio = [[UIScreen mainScreen] bounds].size.height / [[UIScreen mainScreen] bounds].size.width;
-    NSArray *mandatoryConstraints = @[
-                                      [[RTCPair alloc] initWithKey:@"minAspectRatio" value:[NSString stringWithFormat:@"%.1f", screenRatio - 0.1]],
-                                      [[RTCPair alloc] initWithKey:@"maxAspectRatio" value:[NSString stringWithFormat:@"%.1f", screenRatio + 0.1]]
-                                      ];
-
-    return [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints optionalConstraints:nil];
-}
-
 - (RTCMediaConstraints *)defaultOfferConstraints {
     NSArray *mandatoryConstraints = @[
                                       [[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],

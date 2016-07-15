@@ -18,8 +18,7 @@
     BOOL _accepted;
     
     BOOL _videoEnabled;
-    UIView *_cameraPreviewView;
-    AVCaptureSession *_captureSession;
+    RTCEAGLVideoView *_cameraPreviewView;
 
 }
 
@@ -57,7 +56,6 @@
     
     _videoEnabled = NO;
     _cameraPreviewView = nil;
-    _captureSession = nil;
     _accepted = NO;
     
     _localVideoTrack = nil;
@@ -79,6 +77,7 @@
     [localStream addAudioTrack : audioTrack];
     
     if (_videoEnabled) {
+        /*
         RTCAVFoundationVideoSource *source = [[RTCAVFoundationVideoSource alloc]
                                               initWithFactory:self.factory
                                               constraints:[self defaultMediaConstraints]];
@@ -87,14 +86,25 @@
                                           initWithFactory:self.factory
                                           source:source
                                           trackId:@"video0"];
-        
+         */
+        AVCaptureDevice *device;
+        for (AVCaptureDevice *item in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
+            if (item.position == AVCaptureDevicePositionFront) {
+                device = item;
+            }
+        }
+        RTCVideoCapturer *capturer = [RTCVideoCapturer capturerWithDeviceName:device.localizedName];
+        RTCVideoSource *source = [self.factory videoSourceWithCapturer:capturer
+                                                           constraints:[self defaultVideoConstraints]];
+        RTCVideoTrack *localVideoTrack = [self.factory videoTrackWithID:@"video0" source:source];
+
         [localStream addVideoTrack:localVideoTrack];
-        _captureSession = source.captureSession;
         _localVideoTrack = localVideoTrack;
     }
     
     [self.peerConnection addStream:localStream];
 
+    [self startPreview];
     NSLog(@"%s, presenting view with offer: %@", __FILE__, self.offer.content);
 }
 
@@ -107,18 +117,19 @@
     }
 }
 
-- (void)startPreviewWithSession : (AVCaptureSession *)session{
+- (void)startPreview{
     if (_cameraPreviewView.superview == self.view) {
         return;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-        AVCaptureVideoPreviewLayer *layer = [AVCaptureVideoPreviewLayer layerWithSession:session];
-        _cameraPreviewView = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 100, 0, 100, 150)];
-        layer.frame = _cameraPreviewView.bounds;//I have no idea why I have to add this line.
-        [_cameraPreviewView.layer addSublayer:layer];
+        NSUInteger width = 100;
+        float screenRatio = [[UIScreen mainScreen] bounds].size.height / [[UIScreen mainScreen] bounds].size.width;
+        NSUInteger height = width * screenRatio;
+        _cameraPreviewView = [[RTCEAGLVideoView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - width, 0, width, height)];
+        _cameraPreviewView.delegate = self;
+        [_localVideoTrack addRenderer:_cameraPreviewView];
         
         [self.view addSubview:_cameraPreviewView];
-        
         [self.view bringSubviewToFront:self.callTitle];
         [self.view bringSubviewToFront:self.acceptButton];
         
@@ -234,7 +245,7 @@ didCreateSessionDescription:(RTCSessionDescription *)sdp error:(NSError *)error
         
         if (_videoEnabled) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self startPreviewWithSession:_captureSession];
+                [self startPreview];
                 [self startRemoteVideo];
             });
         }
