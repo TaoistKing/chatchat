@@ -466,6 +466,9 @@ UISearchResultsUpdating, SocketIODelegate>
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //show action sheet
     User *selectedUser = [[_userManager listUsers] objectAtIndex:indexPath.row];
+    if (!selectedUser) {
+        return;
+    }
     if ([selectedUser.uniqueID isEqualToString: [_userManager localUser].uniqueID]) {
         //do nothing on click myself
         return;

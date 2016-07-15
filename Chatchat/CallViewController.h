@@ -24,6 +24,7 @@
 #import "RTCICEServer.h"
 #import "RTCICECandidate.h"
 #import "RTCAVFoundationVideoSource.h"
+#import "RTCVideoCapturer.h"
 
 #import "constants.h"
 #import "CommonDefines.h"
@@ -33,8 +34,8 @@
 @property (strong, nonatomic) RTCPeerConnectionFactory *factory;
 @property (strong, nonatomic) RTCPeerConnection *peerConnection;
 
-@property (weak) id<SocketIODelegate> socketIODelegate;
-@property (weak) User *peer;
+@property (strong) id<SocketIODelegate> socketIODelegate;
+@property (strong) User *peer;
 
 - (RTCMediaConstraints *)defaultMediaConstraints;
 - (NSArray *)defaultIceServers;

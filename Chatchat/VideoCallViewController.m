@@ -18,13 +18,22 @@
     IBOutlet UILabel *_callingTitle;
     IBOutlet UIButton *_hangupButton;
     
-    UIView *_cameraPreviewView;
-    AVCaptureSession *_captureSession;
+    RTCEAGLVideoView *_cameraPreviewView;
 }
 @end
 
 
 @implementation VideoCallViewController
+
+- (RTCMediaConstraints *)defaultVideoConstraints{
+    float screenRatio = [[UIScreen mainScreen] bounds].size.height / [[UIScreen mainScreen] bounds].size.width;
+    NSArray *mandatoryConstraints = @[
+                                      [[RTCPair alloc] initWithKey:@"minAspectRatio" value:[NSString stringWithFormat:@"%.1f", screenRatio - 0.1]],
+                                      [[RTCPair alloc] initWithKey:@"maxAspectRatio" value:[NSString stringWithFormat:@"%.1f", screenRatio + 0.1]]
+                                      ];
+
+    return [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints optionalConstraints:nil];
+}
 
 - (RTCMediaConstraints *)defaultOfferConstraints {
     NSArray *mandatoryConstraints = @[
@@ -46,21 +55,35 @@
     
     _callingTitle.text = [NSString stringWithFormat:@"Calling %@", self.peer.name];
     _cameraPreviewView = nil;
-    _captureSession = nil;
 
+    [self startLocalStream];
+}
+
+- (void)startLocalStream{
     RTCMediaStream *localStream = [self.factory mediaStreamWithLabel:@"localStream"];
     RTCAudioTrack *audioTrack = [self.factory audioTrackWithID:@"audio0"];
     [localStream addAudioTrack : audioTrack];
     
-    RTCAVFoundationVideoSource *source = [[RTCAVFoundationVideoSource alloc]
-                                           initWithFactory:self.factory
-                                           constraints:[self defaultMediaConstraints]];
-    
-    RTCVideoTrack *localVideoTrack = [[RTCVideoTrack alloc]
-                                       initWithFactory:self.factory
-                                       source:source
-                                       trackId:@"video0"];
-    
+    /*
+     RTCAVFoundationVideoSource *source = [[RTCAVFoundationVideoSource alloc]
+     initWithFactory:self.factory
+     constraints:[self defaultMediaConstraints]];
+     
+     RTCVideoTrack *localVideoTrack = [[RTCVideoTrack alloc]
+     initWithFactory:self.factory
+     source:source
+     trackId:@"video0"];
+     */
+    AVCaptureDevice *device;
+    for (AVCaptureDevice *item in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
+        if (item.position == AVCaptureDevicePositionFront) {
+            device = item;
+        }
+    }
+    RTCVideoCapturer *capturer = [RTCVideoCapturer capturerWithDeviceName:device.localizedName];
+    RTCVideoSource *source = [self.factory videoSourceWithCapturer:capturer
+                                                       constraints:[self defaultVideoConstraints]];
+    RTCVideoTrack *localVideoTrack = [self.factory videoTrackWithID:@"video0" source:source];
     [localStream addVideoTrack:localVideoTrack];
     _localVideoTrack = localVideoTrack;
     
@@ -68,48 +91,25 @@
     
     [self.peerConnection createOfferWithDelegate:self constraints:[self defaultOfferConstraints]];
     
-    //add camera preview layer
-    _captureSession = source.captureSession;
-    [_captureSession addObserver:self
-                      forKeyPath:@"running"
-                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                         context:nil];
+    [self startPreview];
 }
 
-- (void)dealloc{
-    
-    [_captureSession removeObserver:self forKeyPath:@"running"];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context{
-    if ([keyPath isEqualToString:@"running"]) {
-        NSInteger running = [[change objectForKey:NSKeyValueChangeNewKey] integerValue];
-        if (running == 1) {
-            //I have to start preview after capturesession is running
-            NSLog(@"AVCaptureSession is running");
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self startPreviewWithSession: object];
-            });
-        }
-    }
-}
-
-- (void)startPreviewWithSession : (id)obj{
+- (void)startPreview{
     if (_cameraPreviewView.superview == self.view) {
         return;
     }
     
-    AVCaptureSession *session = (AVCaptureSession *)obj;
-    AVCaptureVideoPreviewLayer *layer = [AVCaptureVideoPreviewLayer layerWithSession:session];
-    _cameraPreviewView = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 100, 0, 100, 150)];
-    layer.frame = _cameraPreviewView.bounds;//I have no idea why I have to add this line.
-    [_cameraPreviewView.layer addSublayer:layer];
-    
-    [self.view addSubview:_cameraPreviewView];
-    
-    [self.view bringSubviewToFront:_callingTitle];
-    [self.view bringSubviewToFront:_hangupButton];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _cameraPreviewView = [[RTCEAGLVideoView alloc] initWithFrame: self.view.bounds];
+        _cameraPreviewView.delegate = self;
+        
+        [self.view addSubview:_cameraPreviewView];
+        [_localVideoTrack addRenderer:_cameraPreviewView];
+        
+        [self.view bringSubviewToFront:_callingTitle];
+        [self.view bringSubviewToFront:_hangupButton];
 
+    });
 }
 
 
@@ -131,19 +131,28 @@
         _remoteVideoTrack = [stream.videoTracks lastObject];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            // Create a new render view with a size of your choice
-            RTCEAGLVideoView *renderView = [[RTCEAGLVideoView alloc] initWithFrame:self.view.bounds];
-            renderView.delegate = self;
-            [_remoteVideoTrack addRenderer:renderView];
-            [self.view addSubview:renderView];
-            
-            [self startPreviewWithSession:_captureSession];
-
+            // Scale local view to upright corner
             if (_cameraPreviewView) {
-                [self.view bringSubviewToFront:_cameraPreviewView];
+                [UIView animateWithDuration:0.5 animations:^{
+                    NSUInteger width = 100;
+                    float screenRatio = [[UIScreen mainScreen] bounds].size.height / [[UIScreen mainScreen] bounds].size.width;
+                    NSUInteger height = width * screenRatio;
+                    _cameraPreviewView.frame = CGRectMake(self.view.bounds.size.width - 100, 0, width, height);
+                } completion:^(BOOL finished) {
+                    // Create a new render view with a size of your choice
+                    RTCEAGLVideoView *renderView = [[RTCEAGLVideoView alloc] initWithFrame:self.view.bounds];
+                    renderView.delegate = self;
+                    [_remoteVideoTrack addRenderer:renderView];
+                    [self.view addSubview:renderView];
+                    
+                    if (_cameraPreviewView) {
+                        [self.view bringSubviewToFront:_cameraPreviewView];
+                    }
+                    [self.view bringSubviewToFront:_callingTitle];
+                    [self.view bringSubviewToFront:_hangupButton];
+
+                }];
             }
-            [self.view bringSubviewToFront:_callingTitle];
-            [self.view bringSubviewToFront:_hangupButton];
         });
     }
 }
