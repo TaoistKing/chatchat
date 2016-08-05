@@ -100,11 +100,12 @@
 
         [localStream addVideoTrack:localVideoTrack];
         _localVideoTrack = localVideoTrack;
+      
+        [self startPreview];
     }
     
     [self.peerConnection addStream:localStream];
 
-    [self startPreview];
     NSLog(@"%s, presenting view with offer: %@", __FILE__, self.offer.content);
 }
 
