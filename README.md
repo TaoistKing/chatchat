@@ -25,7 +25,7 @@ Socket.io swift client : https://github.com/socketio/socket.io-client-swift
 
 #Deploy steps
 ##run your server
-Make sure Node is installed first, then open your terminal
+Make sure [Node](https://nodejs.org/en/) is installed first, then open your terminal
 ```
 cd Server
 
@@ -36,7 +36,8 @@ node index.js
 ##run your web client
 - open [localhost:3000](http://localhost:3000) on your browser 
 
->Note: currently the web client only supports text message, and all messages sent from Web will be broadcast message
+>Note: currently the web client only supports text message, and all messages sent from Web will be broadcast message. 
+You will need two iOS client for voice/video chat.
 
 ##run your iOS client
 - install dependency with `pod install`
