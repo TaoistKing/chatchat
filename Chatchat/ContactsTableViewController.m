@@ -7,7 +7,6 @@
 //
 
 #import "ContactsTableViewController.h"
-#import <SocketIOClientSwift/SocketIOClientSwift-Swift.h>
 #import "ChatViewController.h"
 #import "CommonDefines.h"
 #import "ChatSessionManager.h"
@@ -15,6 +14,8 @@
 #import "VoiceCallViewController.h"
 #import "VideoCallViewController.h"
 #import "IncomingCallViewController.h"
+
+@import SocketIO;
 
 @interface ContactsTableViewController () <UISearchControllerDelegate,
 UISearchResultsUpdating, SocketIODelegate>
@@ -102,7 +103,7 @@ UISearchResultsUpdating, SocketIODelegate>
         textField.textAlignment = NSTextAlignmentCenter;
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         textField.placeholder = @"e.g. 192.168.1.100";
-        [textField setKeyboardType:UIKeyboardTypeDecimalPad];
+        [textField setKeyboardType:UIKeyboardTypeDefault];
         _inputTextField = textField;
     }];
     [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -123,7 +124,7 @@ UISearchResultsUpdating, SocketIODelegate>
 
 - (void)setupSocketIO{
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:3000", _hostAddr]];
-    _sio = [[SocketIOClient alloc] initWithSocketURL:url options:@{@"voipEnabled" : @YES,
+    _sio = [[SocketIOClient alloc] initWithSocketURL:url config:@{@"voipEnabled" : @YES,
                                                                    @"log": @NO,
                                                                    @"forceWebsockets" : @YES,
                                                                    //                                                                   @"secure" : @YES,
@@ -133,7 +134,7 @@ UISearchResultsUpdating, SocketIODelegate>
         _serverConnected = YES;
         NSString *deviceName = [[UIDevice currentDevice] name];
         NSDictionary *dic = @{@"name" : deviceName, @"uuid" : [UIDevice currentDevice].identifierForVendor.UUIDString};
-        [_sio emit:@"register" withItems:@[dic]];
+        [_sio emit:@"register" with:@[dic]];
     }];
     
     [_sio on:@"disconnect" callback:^(NSArray * _Nonnull data, SocketAckEmitter * _Nonnull ack) {
@@ -203,7 +204,7 @@ UISearchResultsUpdating, SocketIODelegate>
     [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
     message.time = [formatter stringFromDate:[NSDate date]];;
 
-    [_sio emit:@"chat message" withItems:@[[message toDictionary]]];
+    [_sio emit:@"chat message" with:@[[message toDictionary]]];
 }
 
 - (void)handleNewMessage : (id)data{
