@@ -28,6 +28,19 @@
 		B2CDF0791CF6DDBB00FCECA8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CDF0771CF6DDBB00FCECA8 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		1A7874B61DFA7B9600302C59 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		1A03B0831D06CFE200E72938 /* VoiceCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceCallViewController.h; sourceTree = "<group>"; };
 		1A03B0841D06CFE200E72938 /* VoiceCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoiceCallViewController.m; sourceTree = "<group>"; };
@@ -199,6 +212,7 @@
 				007566F4BE525EF9774EDFD6 /* [CP] Copy Pods Resources */,
 				4D52EC991DEE53D50E3FC9A0 /* 📦 Embed Pods Frameworks */,
 				A75C17AF99809625482B01FE /* 📦 Copy Pods Resources */,
+				1A7874B61DFA7B9600302C59 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
