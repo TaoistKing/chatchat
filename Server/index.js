@@ -1,9 +1,11 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var users = [];
 var index = 0;
 
+app.use(express.static(__dirname + '/public'));
 
 function findIndexByUID(uid){
   var i;
@@ -36,9 +38,16 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/webrtc', function(req, res){
+  console.log(__dirname);
+  res.sendFile(__dirname + '/webrtc.html');
+});
+
 app.get('/listUsers', function(req, res){
   res.end(JSON.stringify(users, censor));
 });
+
+
 
 io.on('connection', function(socket){
   var peer;

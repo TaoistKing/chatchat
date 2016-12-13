@@ -19,12 +19,12 @@
   <h1>Text Inputs</h1>
   </div>
   <div data-role="main" class="ui-content">
-    <form action="">
+    <form action="" id='inputNameForm'>
       <div class="ui-field-contain">
         <label for="fullname">Full name:</label>
         <input type="text" name="fullname" id="fullname">       
       </div>
-      <button id="startButton"> OK </button>
+      <input type="submit" data-inline="true" value="提交">
     </form>
   </div>
 </div>
@@ -38,61 +38,133 @@
   </div>
 </div> 
 
+<div id="dialog1"></div>
+
+<div data-role="dialog" id="actions">
+	<div data-role="content" data-theme="b">
+		<span class="title">Choose Action</span>
+
+		<a href="#home" data-role="button" data-theme="a">Text</a>
+		<a href="#home" data-role="button" data-theme="a">Voice</a>
+		<a href="#videoPage" data-role="button" data-theme="a" id='startVideoButton'>Video</a>
+		<a href="#listPage" data-role="button" data-theme="d" data-rel="#listPage">Cancel</a>
+	</div>
+</div>
+
+<div data-role="dialog" id="incomingVideo">
+	<div data-role="content" data-theme="b">
+		<span class="title">Choose Action</span>
+
+		<a href="#home" data-role="button" data-theme="a" id='answerButton'>Answer</a>
+		<a href="#home" data-role="button" data-theme="a" id='denyButton'>Deny</a>
+		<a href="#home" data-role="button" data-theme="d" data-rel="back">Cancel</a>
+	</div>
+</div>
+
+<div data-role="page" id="videoPage">
+  <div data-role="main" class="ui-content">
+    <h2>Local Video</h2>
+    <video autoplay width=320 id='localVideo'>Your browser does not support the video tag.</video>
+    <h2>Remote Video</h2>
+    <video autoplay width=320 id='remoteVideo'>Your browser does not support the video tag.</video>
+    <a href='#listPage' data-role="button" id='videoBackButton'>back</a>
+    </ol>
+  </div>
+</div> 
+
+
+
    <script>
 
-	var startButton = document.getElementById('startButton');
-	startButton.onclick = function(){
+	$('#inputNameForm').submit(function(){
 		window.fullname = $('#fullname').val();
 		
 		register();
-	};
+		//$.mobile.changePage($('#listPage'));
+		location.href = '#listPage';
+	});
+    
+    $('#listPage').on('pagecreate', function(){
+		$.get(
+			"listUsers",
+			{paramOne : 1, paramX : 'abc'},
+			function(data) {
+			   users = JSON.parse(data);
+			   console.log('listUsers: ' + users);
+			   //$.mobile.changePage( "#listPage", { transition: "slide", changeHash: false });
+			   $.each(users, function(index, value){
+					appendUser(value);
+				});
+				$('#userlist').listview("refresh");
+				listPageDidCreate = true;
+			 }
+		  );
+    });
+    
+    $('#listPage').on('pageshow', function(){
+    });
       
     var socket = io();
 	var uuid = guid();
-
+	var listPageDidCreate = false;
+	var isCaller = false;
+	
 	socket.on('register succeed', function(msg){
 	  window.socket = socket;
-  
-	  $.get(
-		"listUsers",
-		{paramOne : 1, paramX : 'abc'},
-		function(data) {
-	       users = JSON.parse(data);
-		   	location.href='#listPage';
-		   //$.mobile.changePage( "#listPage", { transition: "slide", changeHash: false });
-			$.each(users, function(index, value){
-				appendUser(value);
-			});
-			$('#userlist').listView('refresh');
-		 }
-	  );
+	  Cookies.set('uuid', uuid);
 	});
 
 
 	socket.on('new user', function(data){
-  		appendUser(data);
-  		window.setTimeout(function(){ $('#userlist').listview("refresh"); }, 300);
-  		//$('#userlist').listView('refresh');
+		if(listPageDidCreate){
+			appendUser(data);
+  			window.setTimeout(function(){ $('#userlist').listview("refresh"); }, 300);
+  			//$('#userlist').listView('refresh');
+		}
 	});
 	
 	socket.on('user leave', function(data){
-		removeUser(data);
-		window.setTimeout(function(){ $('#userlist').listview("refresh"); }, 300);
-		//$('#userlist').listView('refresh');
+		if(listPageDidCreate){
+			removeUser(data);
+			window.setTimeout(function(){ $('#userlist').listview("refresh"); }, 300);
+			//$('#userlist').listView('refresh');
+		}
+	});
+	
+	socket.on('chat message', function(data){
+  		//dispatch signal messages to corresponding functions, ie , 
+  		//onRemoteOffer/ onRemoteAnswer/onRemoteIceCandidate
+  		//IS this message to me ?
+  		if(data.to != uuid){
+  			return;
+  		}
+  		//
+  		if(data.type == 'signal'){
+  			onSignalMessage(data);
+  		}else if(data.type == 'text'){
+  			console.log('received text message from ' + data.from + ', content: ' + data.content);
+  		}else{
+  			console.log('received unknown message type ' + data.type + ' from ' + data.from);
+  		}
 	});
 	
 	socket.on('connect', function(){
-  
 	});
 	
 
     $('#userlist').on('click', 'li', function() {
-        alert($(this).attr('id')); // id of clicked li by directly accessing DOMElement property
+    	var uid = $(this).attr('id');
+    	if(uid == uuid){return;}
+    	//window.location.href = '#actions';
+    	console.log('click user ' + uid);
+    	$.mobile.changePage('#actions');
+    	window.remoteUUID = uid;
+    	Cookies.set('remoteUUID', uid);
     });
     
 	function appendUser(user){
+		console.log('appendUser ' + user.id);
 		$('#userlist').append('<li id=' + user.id + '><a href="#">' + user.name + '</a></li>');   
-		
 	};
 	
 	function removeUser(user){
@@ -110,15 +182,16 @@
 	  .substring(1);
 	}
 
-
 	function register(){
 		var info = {name: window.fullname, uuid: uuid};
 	    socket.emit('register', info);
 	}
-
+	
     </script>
     
-
+	<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/js.cookie.js"></script>
     
 </body>
 </html>
