@@ -20,7 +20,7 @@
 @interface Message : NSObject
 @property NSString *from;
 @property NSString *to;
-@property NSString *content;
+@property id content;//Maybe NSString or NSDictionary
 @property NSString *time;
 @property NSString *type;//text, signal
 @property NSString *subtype;//offer, answer, candidate, close
@@ -30,7 +30,7 @@
 - (instancetype)initWithPeerUID : (NSString *)peerUID
                             Type: (NSString *)type
                          SubType: (NSString *)subtype
-                         Content: (NSString *)content;
+                         Content: (id)content;
 
 + (instancetype)textMessageWithPeerUID : (NSString *)peerUID
                                content : (NSString *)content;

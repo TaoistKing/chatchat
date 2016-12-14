@@ -10,6 +10,8 @@
 
 #import "RTCICECandidate+JSON.h"
 
+#import "RTCSessionDescription+JSON.h"
+
 @interface OutgoingViewController ()
 
 @end
@@ -27,33 +29,14 @@
 }
 
 - (RTCMediaConstraints *)defaultOfferConstraints {
-    NSArray *mandatoryConstraints = @[
-                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
-                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"false"]
-                                      ];
-    NSArray *optionalConstraints = @[
-                                     [[RTCPair alloc] initWithKey:@"DtlsSrtpKeyAgreement" value:@"false"]
-                                     ];
-    
+  NSDictionary *mandatoryConstraints = @{@"OfferToReceiveAudio": @"true",
+                                         @"OfferToReceiveVideo": @"true"};
+  NSDictionary *optionalConstraints = @{@"DtlsSrtpKeyAgreement" : @"false"};
+  
     RTCMediaConstraints* constraints =
     [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints
                                           optionalConstraints:optionalConstraints];
     return constraints;
-}
-
-#pragma mark -- RTCSessionDescriptionDelegate override --
-- (void)peerConnection:(RTCPeerConnection *)peerConnection
-didCreateSessionDescription:(RTCSessionDescription *)sdp error:(NSError *)error
-{
-    [super peerConnection:peerConnection didCreateSessionDescription:sdp error:error];
-    
-    // Send offer through the signaling channel of our application
-    Message *message = [[Message alloc] initWithPeerUID:self.peer.uniqueID
-                                                   Type:@"signal"
-                                                SubType:@"offer"
-                                                Content:sdp.description];
-    
-    [self.socketIODelegate sendMessage:message];
 }
 
 
@@ -68,21 +51,18 @@ didCreateSessionDescription:(RTCSessionDescription *)sdp error:(NSError *)error
             //I'm calling out, so I don't accept offer right now
             
         }else if([message.subtype isEqualToString:@"answer"]){
-            
-            RTCSessionDescription *remoteDesc = [[RTCSessionDescription alloc] initWithType:@"answer" sdp:message.content];
-            [self.peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:remoteDesc];
+          __weak OutgoingViewController *weakSelf = self;
+          
+            RTCSessionDescription *remoteDesc = [RTCSessionDescription sdpFromJSONDictionary:message.content];
+            [self.peerConnection setRemoteDescription:remoteDesc completionHandler:^(NSError * _Nullable error) {
+              [weakSelf didSetSessionDescriptionWithError:error];
+            }];
             
         }else if([message.subtype isEqualToString:@"candidate"]){
-            NSError *error = nil;
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[message.content dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:&error];
-            if (error) {
-                NSLog(@"error serialize candidate string!");
-            }else{
-                NSLog(@"got candidate from peer: %@", message.content);
-                
-                RTCICECandidate *candidate = [RTCICECandidate candidateFromJSONDictionary:dic];
-                [self.peerConnection addICECandidate:candidate];
-            }
+            NSLog(@"got candidate from peer: %@", message.content);
+            
+            RTCIceCandidate *candidate = [RTCIceCandidate candidateFromJSONDictionary:message.content];
+            [self.peerConnection addIceCandidate:candidate];
         }else if ([message.subtype isEqualToString:@"close"]){
             [self handleRemoteHangup];
         }

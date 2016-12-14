@@ -24,13 +24,16 @@
     
     _callingTitle.text = [NSString stringWithFormat:@"Calling %@", self.peer.name];
     
-    RTCMediaStream *localStream = [self.factory mediaStreamWithLabel:@"localStream"];
-    RTCAudioTrack *audioTrack = [self.factory audioTrackWithID:@"audio0"];
+    RTCMediaStream *localStream = [self.factory mediaStreamWithStreamId:@"localStream"];
+    RTCAudioTrack *audioTrack = [self.factory audioTrackWithTrackId:@"audio0"];
     [localStream addAudioTrack : audioTrack];
     
     [self.peerConnection addStream:localStream];
 
-    [self.peerConnection createOfferWithDelegate:self constraints:[self defaultOfferConstraints]];
+    [self.peerConnection offerForConstraints:[self defaultOfferConstraints]
+                           completionHandler:^(RTCSessionDescription * _Nullable sdp, NSError * _Nullable error) {
+                             [self didCreateSessionDescription:sdp error:error];
+    }];
 }
 
 

@@ -11,6 +11,8 @@
 		1A03B0851D06CFE200E72938 /* VoiceCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A03B0841D06CFE200E72938 /* VoiceCallViewController.m */; };
 		1A03B09C1D08120700E72938 /* RTCICECandidate+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A03B09B1D08120700E72938 /* RTCICECandidate+JSON.m */; };
 		1A03B09F1D08198F00E72938 /* IncomingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A03B09E1D08198F00E72938 /* IncomingCallViewController.m */; };
+		1A402FB51E00DE220000E020 /* RTCSessionDescription+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A402FB41E00DE220000E020 /* RTCSessionDescription+JSON.m */; };
+		1A402FB81E0120A70000E020 /* ARDSDPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A402FB71E0120A70000E020 /* ARDSDPUtils.m */; };
 		1A8EBF381CFD38930037BABB /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */; };
 		1A8EBF421CFE80420037BABB /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF411CFE80410037BABB /* ChatViewController.m */; };
 		1A8EBF461CFECC540037BABB /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EBF451CFECC540037BABB /* User.m */; };
@@ -48,6 +50,10 @@
 		1A03B09B1D08120700E72938 /* RTCICECandidate+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTCICECandidate+JSON.m"; sourceTree = "<group>"; };
 		1A03B09D1D08198F00E72938 /* IncomingCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingCallViewController.h; sourceTree = "<group>"; };
 		1A03B09E1D08198F00E72938 /* IncomingCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallViewController.m; sourceTree = "<group>"; };
+		1A402FB31E00DE220000E020 /* RTCSessionDescription+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTCSessionDescription+JSON.h"; sourceTree = "<group>"; };
+		1A402FB41E00DE220000E020 /* RTCSessionDescription+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTCSessionDescription+JSON.m"; sourceTree = "<group>"; };
+		1A402FB61E0120A70000E020 /* ARDSDPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDSDPUtils.h; sourceTree = "<group>"; };
+		1A402FB71E0120A70000E020 /* ARDSDPUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDSDPUtils.m; sourceTree = "<group>"; };
 		1A8EBF361CFD38930037BABB /* ContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewController.h; sourceTree = "<group>"; };
 		1A8EBF371CFD38930037BABB /* ContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewController.m; sourceTree = "<group>"; };
 		1A8EBF401CFE80410037BABB /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
@@ -114,6 +120,8 @@
 				1A03B09E1D08198F00E72938 /* IncomingCallViewController.m */,
 				1A03B09A1D08120700E72938 /* RTCICECandidate+JSON.h */,
 				1A03B09B1D08120700E72938 /* RTCICECandidate+JSON.m */,
+				1A402FB31E00DE220000E020 /* RTCSessionDescription+JSON.h */,
+				1A402FB41E00DE220000E020 /* RTCSessionDescription+JSON.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -168,6 +176,8 @@
 				1A1F050E1D05043C00982A1E /* ViewControllers */,
 				B2CDF06C1CF6DDBA00FCECA8 /* AppDelegate.h */,
 				B2CDF06D1CF6DDBA00FCECA8 /* AppDelegate.m */,
+				1A402FB61E0120A70000E020 /* ARDSDPUtils.h */,
+				1A402FB71E0120A70000E020 /* ARDSDPUtils.m */,
 				B2CDF0AE1CF6EF1F00FCECA8 /* constants.h */,
 				1A8EBF431CFEB0C40037BABB /* CommonDefines.h */,
 				B2CDF0721CF6DDBB00FCECA8 /* Main.storyboard */,
@@ -385,6 +395,8 @@
 				1A8EBF4C1CFFDB080037BABB /* ChatSession.m in Sources */,
 				1A8EBF491CFECC640037BABB /* Message.m in Sources */,
 				1A03B0851D06CFE200E72938 /* VoiceCallViewController.m in Sources */,
+				1A402FB51E00DE220000E020 /* RTCSessionDescription+JSON.m in Sources */,
+				1A402FB81E0120A70000E020 /* ARDSDPUtils.m in Sources */,
 				1AB9EC671D33443200BCC48A /* CallViewController.m in Sources */,
 				1ABCAACA1D1D051A0087E1CA /* VideoCallViewController.m in Sources */,
 			);

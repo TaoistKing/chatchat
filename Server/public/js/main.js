@@ -199,12 +199,7 @@ function onSignalOffer(offer){
 }
 
 function onSignalCandidate(candidate){
-	var c = candidate;
-	if(typeof(candidate) == 'string'){
-		c = JSON.parse(candidate);
-	}
-	var d = JSON.parse(candidate);
-	onRemoteIceCandidate(d);
+	onRemoteIceCandidate(candidate);
 }
 
 function onSignalAnswer(answer){
@@ -253,7 +248,7 @@ function applyRemoteCandidates(){
 }
 
 function addRemoteCandidate(candidate){
-	pc.addIceCandidate(new RTCIceCandidate(candidate)).then(
+	pc.addIceCandidate(candidate).then(
       function() {
         onAddIceCandidateSuccess(pc);
       },
@@ -264,10 +259,9 @@ function addRemoteCandidate(candidate){
 
 
 function onAnswer(){
-	var remoteOffer = Cookies.get('offer');
-	var offer = JSON.parse(remoteOffer);
+	var remoteOffer = Cookies.getJSON('offer');
 
-	pc.setRemoteDescription(offer).then(function(){onSetRemoteSuccess(pc)}, onSetSessionDescriptionError);
+	pc.setRemoteDescription(remoteOffer).then(function(){onSetRemoteSuccess(pc)}, onSetSessionDescriptionError);
 
 	pc.createAnswer().then(
 		onCreateAnswerSuccess,

@@ -26,7 +26,7 @@
 - (instancetype)initWithPeerUID : (NSString *)peerUID
                             Type: (NSString *)type
                          SubType: (NSString *)subtype
-                         Content: (NSString *)content{
+                         Content: (id)content{
     if (self = [super init]) {
         self.from = [[UserManager sharedManager] localUser].uniqueID;
         self.to = peerUID;

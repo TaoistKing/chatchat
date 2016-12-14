@@ -6,11 +6,11 @@
 //  Copyright © 2016年 Beta.Inc. All rights reserved.
 //
 
-#import "RTCICECandidate.h"
+#import <WebRTC/RTCIceCandidate.h>
 
-@interface RTCICECandidate (JSON)
+@interface RTCIceCandidate (JSON)
 
-+ (RTCICECandidate *)candidateFromJSONDictionary:(NSDictionary *)dictionary;
++ (RTCIceCandidate *)candidateFromJSONDictionary:(NSDictionary *)dictionary;
 - (NSData *)JSONData;
 - (NSString *)JSONString;
 - (NSDictionary *)toDictionary;

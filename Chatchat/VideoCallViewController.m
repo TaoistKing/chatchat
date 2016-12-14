@@ -26,14 +26,10 @@
 @implementation VideoCallViewController
 
 - (RTCMediaConstraints *)defaultOfferConstraints {
-    NSArray *mandatoryConstraints = @[
-                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
-                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]
-                                      ];
-    NSArray *optionalConstraints = @[
-                                     [[RTCPair alloc] initWithKey:@"DtlsSrtpKeyAgreement" value:@"false"]
-                                     ];
-    
+  NSDictionary *mandatoryConstraints = @{@"OfferToReceiveAudio": @"true",
+                                         @"OfferToReceiveVideo": @"true"};
+  NSDictionary *optionalConstraints = @{@"DtlsSrtpKeyAgreement" : @"false"};
+  
     RTCMediaConstraints* constraints =
     [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints
                                           optionalConstraints:optionalConstraints];
@@ -50,36 +46,22 @@
 }
 
 - (void)startLocalStream{
-    RTCMediaStream *localStream = [self.factory mediaStreamWithLabel:@"localStream"];
-    RTCAudioTrack *audioTrack = [self.factory audioTrackWithID:@"audio0"];
+    RTCMediaStream *localStream = [self.factory mediaStreamWithStreamId:@"localStream"];
+    RTCAudioTrack *audioTrack = [self.factory audioTrackWithTrackId:@"audio0"];
     [localStream addAudioTrack : audioTrack];
-    
-    /*
-     RTCAVFoundationVideoSource *source = [[RTCAVFoundationVideoSource alloc]
-     initWithFactory:self.factory
-     constraints:[self defaultMediaConstraints]];
-     
-     RTCVideoTrack *localVideoTrack = [[RTCVideoTrack alloc]
-     initWithFactory:self.factory
-     source:source
-     trackId:@"video0"];
-     */
-    AVCaptureDevice *device;
-    for (AVCaptureDevice *item in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
-        if (item.position == AVCaptureDevicePositionFront) {
-            device = item;
-        }
-    }
-    RTCVideoCapturer *capturer = [RTCVideoCapturer capturerWithDeviceName:device.localizedName];
-    RTCVideoSource *source = [self.factory videoSourceWithCapturer:capturer
-                                                       constraints:[self defaultVideoConstraints]];
-    RTCVideoTrack *localVideoTrack = [self.factory videoTrackWithID:@"video0" source:source];
+  
+    //How to initialize souce??
+    RTCVideoSource *source = [self.factory avFoundationVideoSourceWithConstraints:[self defaultMediaConstraints]];
+    RTCVideoTrack *localVideoTrack = [self.factory videoTrackWithSource:source trackId:@"video0"];
     [localStream addVideoTrack:localVideoTrack];
     _localVideoTrack = localVideoTrack;
     
     [self.peerConnection addStream:localStream];
     
-    [self.peerConnection createOfferWithDelegate:self constraints:[self defaultOfferConstraints]];
+    [self.peerConnection offerForConstraints:[self defaultOfferConstraints]
+                           completionHandler:^(RTCSessionDescription * _Nullable sdp, NSError * _Nullable error) {
+                             [self didCreateSessionDescription:sdp error:error];
+    }];
     
     [self startPreview];
 }
@@ -112,8 +94,8 @@
 #pragma mark -- peerConnection delegate override --
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
-           addedStream:(RTCMediaStream *)stream{
-    [super peerConnection:peerConnection addedStream:stream];
+           didAddStream:(RTCMediaStream *)stream{
+    [super peerConnection:peerConnection didAddStream:stream];
     
     NSLog(@"%s, video tracks: %lu", __FILE__, (unsigned long)stream.videoTracks.count);
 
