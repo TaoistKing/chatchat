@@ -106,8 +106,8 @@ function call() {
   if (audioTracks.length > 0) {
     trace('Using audio device: ' + audioTracks[0].label);
   }
-  var servers = null;
-  pc = new RTCPeerConnection(servers);
+  var configuration = { "iceServers": [{ "urls": "stun:stun.ideasip.com" }] };
+  pc = new RTCPeerConnection(configuration);
   trace('Created local peer connection object pc');
   
   pc.onicecandidate = function(e) {
@@ -144,7 +144,7 @@ function onCreateSessionDescriptionError(error) {
 
 function onCreateOfferSuccess(desc) {
   trace('Offer from pc\n' + desc.sdp);
-  trace('pc1 setLocalDescription start');
+  trace('pc setLocalDescription start');
   pc.setLocalDescription(desc).then(
     function() {
       onSetLocalSuccess(pc);
