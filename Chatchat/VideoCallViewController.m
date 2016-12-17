@@ -51,7 +51,7 @@
     [localStream addAudioTrack : audioTrack];
   
     //How to initialize souce??
-    RTCVideoSource *source = [self.factory avFoundationVideoSourceWithConstraints:[self defaultMediaConstraints]];
+    RTCVideoSource *source = [self.factory avFoundationVideoSourceWithConstraints:[self defaultVideoConstraints]];
     RTCVideoTrack *localVideoTrack = [self.factory videoTrackWithSource:source trackId:@"video0"];
     [localStream addVideoTrack:localVideoTrack];
     _localVideoTrack = localVideoTrack;

@@ -91,6 +91,8 @@ NSString *const RTCIceStateNames[] = {
     if (_statTimer) {
         [_statTimer invalidate];
     }
+  
+  RTCCleanupSSL();
 }
 
 #pragma mark -- RTCSessionDescriptionDelegate --

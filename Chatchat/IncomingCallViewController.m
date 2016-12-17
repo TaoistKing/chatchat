@@ -79,7 +79,7 @@
   [localStream addAudioTrack : audioTrack];
   
     if (_videoEnabled) {
-      RTCVideoSource *source = [self.factory avFoundationVideoSourceWithConstraints:[self defaultMediaConstraints]];
+      RTCVideoSource *source = [self.factory avFoundationVideoSourceWithConstraints:[self defaultVideoConstraints]];
       RTCVideoTrack *localVideoTrack = [self.factory videoTrackWithSource:source trackId:@"video0"];
       [localStream addVideoTrack:localVideoTrack];
       
