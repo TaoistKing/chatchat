@@ -26,6 +26,15 @@ Socket.io swift client : https://github.com/socketio/socket.io-client-swift
 
 
 # Deploy steps
+## Create SSL keys
+First, You need to create your own SSK keys for your https server.
+```
+cd Server/public/key
+openssl genrsa 1024 > private.pem
+openssl req -new -key private.pem -out csr.pem
+openssl x509 -req -days 365 -in csr.pem -signkey private.pem -out file.crt
+
+```
 ## Run your server
 Make sure [Node](https://nodejs.org/en/) is installed first, then open your terminal
 ```
@@ -33,11 +42,13 @@ cd Server
 
 npm install
 
-node index.js
+node server.js
 ```
 ## Run your web client
-- open [localhost:3000](http://localhost:3000) on your browser 
+- open [localhost:3001](https://localhost:3001) on your browser 
+- ignore the secure warning and proceed
 - type in your nickname and submit
+- choose some other people online and start video call
 
 ## Run your iOS client
 - install dependency with `pod install`
