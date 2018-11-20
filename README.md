@@ -27,7 +27,7 @@ Socket.io swift client : https://github.com/socketio/socket.io-client-swift
 
 # Deploy steps
 ## Create SSL keys
-First, You need to create your own SSK keys for your https server.
+First, You need to create your own SSL keys for your https server.
 ```
 cd Server/public/key
 openssl genrsa 1024 > private.pem
