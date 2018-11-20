@@ -105,13 +105,13 @@
     });
       
     var socket = io();
-	var uuid = guid();
 	var listPageDidCreate = false;
 	var isCaller = false;
+        var uuid;
 	
 	socket.on('register succeed', function(msg){
 	  window.socket = socket;
-	  Cookies.set('uuid', uuid);
+	  Cookies.set('uuid', window.fullname);
 	});
 
 
@@ -183,7 +183,8 @@
 	}
 
 	function register(){
-		var info = {name: window.fullname, uuid: uuid};
+		var info = {name: window.fullname, uuid: window.fullname};
+		uuid = window.fullname;
 	    socket.emit('register', info);
 	}
 	

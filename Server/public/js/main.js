@@ -118,7 +118,8 @@ function call() {
     onIceStateChange(pc, e);
   };
 
-  pc.onaddstream = gotRemoteStream;
+ // pc.onaddstream = gotRemoteStream;
+  pc.ontrack  = gotRemoteTrack;
 
   pc.addStream(localStream);
   trace('Added local stream to pc');
@@ -174,6 +175,10 @@ function gotRemoteStream(e) {
   remoteVideo.srcObject = e.stream;
   trace('pc received remote stream');
 }
+function gotRemoteTrack(e) {
+  remoteVideo.srcObject = e.streams[0];
+  trace('pc received remote track');
+}
 
 function onSignalMessage(m){
 	if(m.subtype == 'offer'){
@@ -193,7 +198,8 @@ function onSignalMessage(m){
 
 
 function onSignalOffer(offer){
-	Cookies.set('offer', offer);
+	var offString = JSON.stringify(offer);
+	window.localStorage.offer = offString;
 	//location.href = '#incomingVideo';
 	$.mobile.changePage('#incomingVideo');
 }
@@ -259,8 +265,10 @@ function addRemoteCandidate(candidate){
 
 
 function onAnswer(){
-	var remoteOffer = Cookies.getJSON('offer');
+	var offString = window.localStorage.offer;
+	var remoteOffer = JSON.parse(offString);
 
+	trace('on remoteOffer :'+ remoteOffer.sdp);
 	pc.setRemoteDescription(remoteOffer).then(function(){onSetRemoteSuccess(pc)}, onSetSessionDescriptionError);
 
 	pc.createAnswer().then(

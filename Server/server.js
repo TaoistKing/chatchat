@@ -1,9 +1,14 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
 var users = [];
 var index = 0;
+var fs = require('fs');
+var privateKey = fs.readFileSync('public/key/private.pem','utf8');
+var certificate = fs.readFileSync('public/key/file.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
+var https = require('https').Server(credentials, app);
+var io = require('socket.io')(https);
 
 app.use(express.static(__dirname + '/public'));
 
@@ -96,5 +101,9 @@ var server = http.listen(3000, function(){
   var host = server.address().address
   var port = server.address().port
   console.log('listening on http://%s:%s', host, port);
+});
+
+https.listen(3001, function(){
+  console.log('listening on https://:3001');
 });
 
