@@ -43,10 +43,9 @@ npm install
 node server.js
 ```
 ## Run your web client
-- open [localhost:3001](https://localhost:3001) on your browser 
+- open [localhost:3001](https://localhost:3001) on your browser(prefer Chrome or Firefox)
 - ignore the secure warning and proceed
 - type in your nickname and submit
-- choose some other people online and start video call
 
 ## Run your iOS client
 - install dependency with `pod install`
