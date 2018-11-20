@@ -39,9 +39,7 @@ openssl x509 -req -days 365 -in csr.pem -signkey private.pem -out file.crt
 Make sure [Node](https://nodejs.org/en/) is installed first, then open your terminal
 ```
 cd Server
-
 npm install
-
 node server.js
 ```
 ## Run your web client
