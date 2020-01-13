@@ -5,7 +5,8 @@ var socket = io();
 var pc;
 var localStream;
 var remoteCandidates = [];
-
+var sendChannel;
+var receiveChannel;
 
 $(document).ready(function(){
 	console.log("document ready.");
@@ -92,6 +93,13 @@ function checkEnter(field, event) {
 		}
 }
 
+function sendData() {
+  const data = $('#datasend').val();
+  sendChannel.send(data);
+  console.log('Sent Data: ' + data);
+  $('#datasend').val('');
+}
+
 function registerUsername() {
 	// Try a registration
 	$('#username').attr('disabled', true);
@@ -148,6 +156,10 @@ function createPc(){
 	var configuration = { "iceServers": [{ "urls": "stun:stun.ideasip.com" }] };
 	pc = new RTCPeerConnection(configuration);
 	console.log('Created local peer connection object pc');
+	
+	sendChannel = pc.createDataChannel("sendchannel");
+	sendChannel.onopen = onSendChannelStateChange;
+  	sendChannel.onclose = onSendChannelStateChange;
 
 	pc.onicecandidate = function(e) {
 		onIceCandidate(pc, e);
@@ -157,6 +169,7 @@ function createPc(){
 		onIceStateChange(pc, e);
 	};
 
+	pc.ondatachannel = receiveChannelCallback;
 	pc.ontrack  = gotRemoteTrack;
 	pc.addStream(localStream);
 	console.log('Added local stream to pc');
@@ -406,9 +419,41 @@ function onIceStateChange(pc, event) {
   }
 }
 
+
+function onSendChannelStateChange() {
+  const readyState = sendChannel.readyState;
+  console.log('Send channel state is: ' + readyState);
+  if (readyState === 'open') {
+  	$('#datasend').removeAttr('disabled');
+  } else {
+  	$('#datasend').attr('disabled', true);
+  }
+}
+
+function receiveChannelCallback(event) {
+  console.log('Receive Channel Callback');
+  receiveChannel = event.channel;
+  receiveChannel.onmessage = onReceiveMessageCallback;
+  receiveChannel.onopen = onReceiveChannelStateChange;
+  receiveChannel.onclose = onReceiveChannelStateChange;
+}
+
+function onReceiveMessageCallback(event) {
+  console.log('Received Message');
+  $('#datarecv').val(event.data);
+}
+
+function onReceiveChannelStateChange() {
+  const readyState = receiveChannel.readyState;
+  console.log(`Receive channel state is: ${readyState}`);
+}
+
 	
 function doHangup() {
 	console.log('Hangup call');
+	sendChannel.close();
+	receiveChannel.close();
+
 	pc.close();
 	pc = null;
   
@@ -432,5 +477,10 @@ function clearViews(){
 
 	$('#call').removeAttr('disabled').unbind('click').click(doCall).html('Call').removeClass("btn-danger").addClass("btn-success");
 	$('#peer').removeAttr('disabled').val("");
+
+	$('#datasend').val('');
+	$('#datarecv').val('');
+	$('#datasend').attr('disabled', true);
+	$('#datarecv').attr('disabled', true);
 }
 
